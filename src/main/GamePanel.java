@@ -86,6 +86,9 @@ public class GamePanel extends JPanel implements Runnable{
     // Update game information
     public void update() {
         player.update();
+        if (player.bullet != null) {
+            player.bullet.update();
+        }
     }
 
     // Draw with updated information
@@ -97,7 +100,11 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2);
 
         player.draw(g2);
-        
+
+        if (player.bullet != null) {
+            player.bullet.draw(g2);
+        }
+
         g2.dispose();
     }
 

@@ -8,11 +8,13 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import projectile.PlayerBullet;
 
 public class Player extends Entity {
     
     GamePanel gp;
     KeyHandler keyH;
+    public PlayerBullet bullet;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -40,7 +42,7 @@ public class Player extends Entity {
     public void update() {
 
         if (keyH.upPressed == true || keyH.downPressed == true || 
-            keyH.leftPressed == true || keyH.rightPressed == true) {
+            keyH.leftPressed == true || keyH.rightPressed == true || keyH.spacePressed == true) {
 
                 if (keyH.upPressed == true) {
                     y -= speed;
@@ -68,6 +70,10 @@ public class Player extends Entity {
                         spriteNum = 1;
                     }
                     spriteCounter = 0;
+                }
+
+                if (keyH.spacePressed == true) {
+                    bullet = new PlayerBullet(this, gp);
                 }
 
             }
@@ -114,8 +120,7 @@ public class Player extends Entity {
 
 
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-        // g2.setColor(Color.WHITE);
-        // g2.fillRect(x, y, gp.tileSize, gp.tileSize);
+        
     }
 
 }
