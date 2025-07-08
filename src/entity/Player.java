@@ -34,8 +34,24 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {
-            down = ImageIO.read(getClass().getResourceAsStream("/res/characters/icons8-genie-48.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown1.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown2.png"));
+            down3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown3.png"));
+            down4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown4.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp1.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp2.png"));
+            up3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp3.png"));
+            up4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp4.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight2.png"));
+            right3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight3.png"));
+            right4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight4.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft2.png"));
+            left3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft3.png"));
+            left4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft4.png"));
         } 
+       
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,12 +80,12 @@ public class Player extends Entity {
                 }
 
                 spriteCounter++;
-                if (spriteCounter > 10) {
-                    if (spriteNum == 1) {
-                        spriteNum = 2;
-                    }
-                    else if (spriteNum == 2) {
+                if (spriteCounter > 5) {
+                    if (spriteNum == 4) {
                         spriteNum = 1;
+                    }
+                    else {
+                        spriteNum++;
                     }
                     spriteCounter = 0;
                 }
@@ -83,43 +99,66 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         
-        BufferedImage image = down; // update to include directions
+        BufferedImage image = null;
 
         switch (direction) {
-        case "up":
-            if (spriteNum == 1) {
-                image = down; // change these lines when more images are added
-            }
-            if (spriteNum == 2) {
-                image = down;
-            }
-            break;
         case "down":
             if (spriteNum == 1) {
-                    image = down;
-                }
-                if (spriteNum == 2) {
-                    image = down;
-                }
+                image = down1;
+            }
+            if (spriteNum == 2) {
+                image = down2;
+            }
+            if (spriteNum == 3) {
+                image = down3; 
+            }
+            if (spriteNum == 4) {
+                image = down4;
+            }
             break;
-        case "left":
+        case "up":
             if (spriteNum == 1) {
-                    image = down;
-                }
-                if (spriteNum == 2) {
-                    image = down;
-                }
+                image = up1;
+            }
+            if (spriteNum == 2) {
+                image = up2;
+            }
+            if (spriteNum == 3) {
+                image = up3;
+            }
+            if (spriteNum == 4) {
+                image = up4;
+            }
             break;
         case "right":
             if (spriteNum == 1) {
-                    image = down;
-                }
-                if (spriteNum == 2) {
-                    image = down;
-                }
+                image = right1;
+            }
+            if (spriteNum == 2) {
+                image = right2;
+            }
+            if (spriteNum == 3) {
+                image = right3;
+            }
+            if (spriteNum == 4) {
+                image = right4;
+            }
+            break;
+        case "left":
+            if (spriteNum == 1) {
+                image = left1;
+            }
+            if (spriteNum == 2) {
+                image = left2;
+            }
+            if (spriteNum == 3) {
+                image = left3;
+            }
+            if (spriteNum == 4) {
+                image = left4;
+            }
             break;
         }
-
 
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
         

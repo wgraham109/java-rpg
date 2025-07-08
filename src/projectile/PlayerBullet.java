@@ -21,7 +21,7 @@ public class PlayerBullet {
     Player player;
     GamePanel gp;
 
-    int speed = 4;
+    int speed = 8;
 
     // Starting point of the bullet
     int x;
@@ -37,8 +37,8 @@ public class PlayerBullet {
     public PlayerBullet(Player player, GamePanel gp) {
         this.player = player;
         this.gp = gp;
-        x = player.x + gp.tileSize/2;
-        y = player.y + gp.tileSize/2;
+        x = player.x + gp.tileSize/4;
+        y = player.y + gp.tileSize/4;
         lifetime = 0;
         getBulletImage();
         getCurrentMousePosition();
@@ -67,8 +67,8 @@ public class PlayerBullet {
     // Reformat this and potentially change to an angle based calculation
     public void update() {
     
-        int currentX = player.x + gp.tileSize/2;
-        int currentY = player.y + gp.tileSize/2;
+        int currentX = player.x;
+        int currentY = player.y;
 
         // Calculate the relative change in x and y position over the bullets lifetime
         double xDiff = Math.abs(mouseX - currentX);
@@ -91,8 +91,18 @@ public class PlayerBullet {
         double yDistance = hypotenuse * yPortion;
 
         // Apply the bullet movement of 1 frame
-        x += (int)xDistance;
-        y += (int)yDistance;
+        if (xDistance < 0) {
+            x -= (int)Math.sqrt(Math.abs(xDistance));
+        }
+        else {
+            x += (int)Math.sqrt(xDistance);
+        }
+        if (yDistance < 0) {
+            y -= (int)Math.sqrt(Math.abs(yDistance));
+        }
+        else {
+            y += (int)Math.sqrt(yDistance);
+        }
 
         // Keep track of the projectile lifetime
         lifetime++;

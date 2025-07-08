@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JPanel;
 
+import entity.Enemy;
 import entity.Player;
 import projectile.PlayerBullet;
 import tile.TileManager;
@@ -10,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 
@@ -30,7 +32,9 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
+    ArrayList<Enemy> enemies = new ArrayList<>();
+    Enemy enemy = new Enemy(this);
 
 
     // Constructor
@@ -41,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+        enemies.add(enemy);
 
     }
 
@@ -76,6 +81,7 @@ public class GamePanel extends JPanel implements Runnable{
                 Thread.sleep((long)remainingTime);
 
                 nextDrawTime += drawInterval;
+                
             } 
             catch (InterruptedException e) {
                 e.printStackTrace();
@@ -88,6 +94,10 @@ public class GamePanel extends JPanel implements Runnable{
     // Update game information
     public void update() {
         player.update();
+
+        for (Enemy e : enemies) {
+            e.update();
+        }
 
         Iterator<PlayerBullet> iter = player.bullets.keySet().iterator();
 
@@ -109,6 +119,10 @@ public class GamePanel extends JPanel implements Runnable{
         tileM.draw(g2);
 
         player.draw(g2);
+
+        for (Enemy e : enemies) {
+            e.draw(g2);
+        }
 
         for (PlayerBullet bullet : player.bullets.keySet()) {
             bullet.draw(g2);
