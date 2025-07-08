@@ -11,15 +11,20 @@ public class Enemy extends Entity {
 
     GamePanel gp;
 
+    public int screenX;
+    public int screenY;
+
     public Enemy(GamePanel gp) {
         this.gp = gp;
+        screenX = gp.screenWidth/4;
+        screenY = gp.screenHeight/4;
         getEnemyImage();
         setDefaultValues();
     }
 
     public void setDefaultValues() {
-        x = 300;
-        y = 300;
+        worldX = 300;
+        worldY = 300;
         speed = 2;
     }
 
@@ -36,47 +41,51 @@ public class Enemy extends Entity {
     public void update() {
 
         //Position of player
-        int playerX = gp.player.x;
-        int playerY = gp.player.y;
+        int playerX = gp.player.worldX;
+        int playerY = gp.player.worldY;
 
-        // Calculate the relative change in x and y position over the bullets lifetime
-        double xDiff = Math.abs(playerX - this.x);
-        if (playerX < this.x) {
+        // Calculate the relative change in worldX and worldY position over the bullets lifetime
+        double xDiff = Math.abs(playerX - this.worldX);
+        if (playerX < this.worldX) {
             xDiff = -xDiff;
         }
-        double yDiff = Math.abs(playerY - this.y);
-        if (playerY < this.y) {
+        double yDiff = Math.abs(playerY - this.worldY);
+        if (playerY < this.worldY) {
             yDiff = -yDiff;
         }
 
-        // Calculate the ratio of x movement vs y movement
+        // Calculate the ratio of x movement vs worldY movement
         double sum = Math.abs(yDiff) + Math.abs(xDiff);
         double xPortion = xDiff/sum;
         double yPortion = yDiff/sum;
 
-        // Calculate the x and y change needed to have the bullet travel the correct distance
+        // Calculate the x and worldY change needed to have the bullet travel the correct distance
         double hypotenuse = Math.pow(speed,2);
         double xDistance = hypotenuse * xPortion;
         double yDistance = hypotenuse * yPortion;
 
         // Apply the bullet movement of 1 frame
         if (xDistance < 0) {
-            x -= (int)Math.sqrt(Math.abs(xDistance));
+            worldX -= (int)Math.sqrt(Math.abs(xDistance));
         }
         else {
-            x += (int)Math.sqrt(xDistance);
+            worldX += (int)Math.sqrt(xDistance);
         }
         if (yDistance < 0) {
-            y -= (int)Math.sqrt(Math.abs(yDistance));
+            worldY -= (int)Math.sqrt(Math.abs(yDistance));
         }
         else {
-            y += (int)Math.sqrt(yDistance);
+            worldY += (int)Math.sqrt(yDistance);
         }
 
+        screenX = worldX - gp.player.worldX + gp.player.screenX;
+        screenY = worldY - gp.player.worldY + gp.player.screenY;
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(down1, x, y, gp.tileSize, gp.tileSize, null);
+
+        
+        g2.drawImage(down1, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 
 }

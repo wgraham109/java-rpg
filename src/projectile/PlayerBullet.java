@@ -24,8 +24,11 @@ public class PlayerBullet {
     int speed = 8;
 
     // Starting point of the bullet
-    int x;
-    int y;
+    int worldX;
+    int worldY;
+
+    int screenX;
+    int screenY;
 
     // Mouse position at the time the bullet is created/fired
     int mouseX;
@@ -37,8 +40,10 @@ public class PlayerBullet {
     public PlayerBullet(Player player, GamePanel gp) {
         this.player = player;
         this.gp = gp;
-        x = player.x + gp.tileSize/4;
-        y = player.y + gp.tileSize/4;
+        worldX = player.worldX + gp.tileSize/4;
+        worldY = player.worldY + gp.tileSize/4;
+        screenX = player.worldX + gp.tileSize/4;
+        screenY = player.worldY + gp.tileSize/4;
         lifetime = 0;
         getBulletImage();
         getCurrentMousePosition();
@@ -65,10 +70,12 @@ public class PlayerBullet {
     }
 
     // Reformat this and potentially change to an angle based calculation
+
+    // FIX AIMING
     public void update() {
     
-        int currentX = player.x;
-        int currentY = player.y;
+        int currentX = player.worldX;
+        int currentY = player.worldY;
 
         // Calculate the relative change in x and y position over the bullets lifetime
         double xDiff = Math.abs(mouseX - currentX);
@@ -92,17 +99,20 @@ public class PlayerBullet {
 
         // Apply the bullet movement of 1 frame
         if (xDistance < 0) {
-            x -= (int)Math.sqrt(Math.abs(xDistance));
+            worldX -= (int)Math.sqrt(Math.abs(xDistance));
         }
         else {
-            x += (int)Math.sqrt(xDistance);
+            worldX += (int)Math.sqrt(xDistance);
         }
         if (yDistance < 0) {
-            y -= (int)Math.sqrt(Math.abs(yDistance));
+            worldY -= (int)Math.sqrt(Math.abs(yDistance));
         }
         else {
-            y += (int)Math.sqrt(yDistance);
+            worldY += (int)Math.sqrt(yDistance);
         }
+
+        screenX = worldX - player.worldX + gp.player.screenX;
+        screenY = worldY - player.worldY + gp.player.screenY;
 
         // Keep track of the projectile lifetime
         lifetime++;
@@ -113,7 +123,7 @@ public class PlayerBullet {
 
     public void draw(Graphics2D g2) {
 
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null); // replace with drawing the bullet image
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); // replace with drawing the bullet image
 
     }
 
