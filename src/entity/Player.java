@@ -3,6 +3,7 @@ package entity;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -14,11 +15,12 @@ public class Player extends Entity {
     
     GamePanel gp;
     KeyHandler keyH;
-    public PlayerBullet bullet;
+    public HashMap<PlayerBullet, Integer> bullets;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+        this.bullets = new HashMap<>();
         setDefaultValues();
         getPlayerImage();
     }
@@ -73,7 +75,7 @@ public class Player extends Entity {
                 }
 
                 if (keyH.spacePressed == true) {
-                    bullet = new PlayerBullet(this, gp);
+                    bullets.put(new PlayerBullet(this, gp), 0);
                 }
 
             }

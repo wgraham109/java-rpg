@@ -3,12 +3,14 @@ package main;
 import javax.swing.JPanel;
 
 import entity.Player;
+import projectile.PlayerBullet;
 import tile.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Iterator;
 
 
 public class GamePanel extends JPanel implements Runnable{
@@ -86,8 +88,15 @@ public class GamePanel extends JPanel implements Runnable{
     // Update game information
     public void update() {
         player.update();
-        if (player.bullet != null) {
-            player.bullet.update();
+
+        Iterator<PlayerBullet> iter = player.bullets.keySet().iterator();
+
+        while (iter.hasNext()) {
+            PlayerBullet bullet = iter.next();
+            bullet.update();
+            if (bullet.lifetime > 60) {
+                iter.remove();
+            }
         }
     }
 
@@ -101,10 +110,10 @@ public class GamePanel extends JPanel implements Runnable{
 
         player.draw(g2);
 
-        if (player.bullet != null) {
-            player.bullet.draw(g2);
+        for (PlayerBullet bullet : player.bullets.keySet()) {
+            bullet.draw(g2);
         }
-
+        
         g2.dispose();
     }
 

@@ -1,11 +1,11 @@
 package projectile;
 
 import java.awt.Graphics2D;
-import java.awt.MouseInfo;
+// import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.PointerInfo;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+// import java.awt.PointerInfo;
+// import java.awt.event.MouseAdapter;
+// import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -22,12 +22,16 @@ public class PlayerBullet {
     GamePanel gp;
 
     int speed = 4;
+
+    // Starting point of the bullet
     int x;
     int y;
+
+    // Mouse position at the time the bullet is created/fired
     int mouseX;
     int mouseY;
 
-    int lifetime;
+    public int lifetime;
     public BufferedImage image;
 
     public PlayerBullet(Player player, GamePanel gp) {
@@ -45,7 +49,7 @@ public class PlayerBullet {
         Point p = gp.getMousePosition();   // null if pointer not over the panel
         if (p != null) {
             mouseX = p.x;
-            mouseX = p.y;
+            mouseY = p.y;
         }
     }
 
@@ -92,9 +96,9 @@ public class PlayerBullet {
 
         // Keep track of the projectile lifetime
         lifetime++;
-        if (lifetime > 60) {
-            player.bullet = null;
-        }
+        // if (lifetime > 60) {
+        //     player.bullets.remove(this);
+        // }
     }
 
     public void draw(Graphics2D g2) {
