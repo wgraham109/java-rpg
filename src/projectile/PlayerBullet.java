@@ -74,8 +74,8 @@ public class PlayerBullet {
     // FIX AIMING
     public void update() {
     
-        int currentX = player.worldX;
-        int currentY = player.worldY;
+        int currentX = player.screenX;
+        int currentY = player.screenY;
 
         // Calculate the relative change in x and y position over the bullets lifetime
         double xDiff = Math.abs(mouseX - currentX);

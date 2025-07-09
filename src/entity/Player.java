@@ -68,22 +68,61 @@ public class Player extends Entity {
         if (keyH.upPressed == true || keyH.downPressed == true || 
             keyH.leftPressed == true || keyH.rightPressed == true || keyH.spacePressed == true) {
 
+                int oldX = worldX;
+                int oldY = worldY;
+
                 if (keyH.upPressed == true) {
                     worldY -= speed;
                     direction = "up";
                 }
-                else if (keyH.downPressed == true) {
+                if (keyH.downPressed == true) {
                     worldY += speed;
                     direction = "down";
                 }
-                else if (keyH.leftPressed == true) {
+                if (keyH.leftPressed == true) {
                     worldX -= speed;
                     direction = "left";
                 }
-                else if (keyH.rightPressed == true) {
+                if (keyH.rightPressed == true) {
                     worldX += speed;
                     direction = "right";
                 }
+
+
+                // Diagonal movement in progress;
+
+                // double xDistance = worldX-oldX;
+                // boolean xNeg = false;
+                // if (xDistance < 0) {
+                //     xNeg = true;
+                //     xDistance = -xDistance;
+                // }
+                // double yDistance = worldX-oldY;
+                // boolean yNeg = false;
+                // if (yDistance < 0) {
+                //     yNeg = true;
+                //     yDistance = -yDistance;
+                // }
+
+                // if (Math.pow(xDistance, 2) + Math.pow(yDistance, 2) > Math.pow(speed, 2)) {
+                //     double xPortion = xDistance/xDistance + yDistance;
+                //     double yPortion = yDistance/xDistance + yDistance;
+                //     xDistance = Math.sqrt(xPortion * Math.pow(speed, 2));
+                //     yDistance = Math.sqrt(yPortion * Math.pow(speed, 2));
+                //     if (xNeg) {
+                //         worldX = oldX - (int)xDistance;
+                //     }
+                //     else {
+                //         worldX = oldX + (int)yDistance;
+                //     }
+                //     if (yNeg) {
+                //         worldY = oldY - (int)yDistance;
+                //     }
+                //     else {
+                //         worldY = oldY + (int)yDistance;
+                //     }
+                // }
+                
 
                 spriteCounter++;
                 if (spriteCounter > 5) {
