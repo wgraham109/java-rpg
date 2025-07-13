@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class Player extends Entity {
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
         setDefaultValues();
         getPlayerImage();
+
+        solidArea = new Rectangle(8, 16, 32, 32);
     }
 
     public void setDefaultValues() {
@@ -68,26 +71,43 @@ public class Player extends Entity {
         if (keyH.upPressed == true || keyH.downPressed == true || 
             keyH.leftPressed == true || keyH.rightPressed == true || keyH.spacePressed == true) {
 
-                int oldX = worldX;
-                int oldY = worldY;
+                // int oldX = worldX;
+                // int oldY = worldY;
 
                 if (keyH.upPressed == true) {
-                    worldY -= speed;
                     direction = "up";
                 }
-                if (keyH.downPressed == true) {
-                    worldY += speed;
+                else if (keyH.downPressed == true) {
                     direction = "down";
                 }
-                if (keyH.leftPressed == true) {
-                    worldX -= speed;
+                else if (keyH.leftPressed == true) {
                     direction = "left";
                 }
-                if (keyH.rightPressed == true) {
-                    worldX += speed;
+                else if (keyH.rightPressed == true) {
                     direction = "right";
                 }
 
+                // Check tile collision
+                collisionOn = false;
+                gp.collisionChecker.checkTile(this);
+
+                // If collision is false, player can move
+                if (collisionOn == false) {
+                    switch (direction) {
+                        case "up":
+                            worldY -= speed;
+                            break;
+                        case "down":
+                            worldY += speed;
+                            break;
+                        case "right":
+                            worldX += speed;
+                            break;
+                        case "left":
+                            worldX -= speed;
+                            break;
+                    }
+                }
 
                 // Diagonal movement in progress;
 

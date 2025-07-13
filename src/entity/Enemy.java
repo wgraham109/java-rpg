@@ -14,6 +14,8 @@ public class Enemy extends Entity {
     public int screenX;
     public int screenY;
 
+    public boolean collision = true;
+
     public Enemy(GamePanel gp) {
         this.gp = gp;
         screenX = gp.screenWidth/4;

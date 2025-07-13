@@ -33,8 +33,6 @@ public class GamePanel extends JPanel implements Runnable{
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
-
-
     int FPS = 60;
 
     TileManager tileM = new TileManager(this);
@@ -43,6 +41,9 @@ public class GamePanel extends JPanel implements Runnable{
     public Player player = new Player(this, keyH);
     ArrayList<Enemy> enemies = new ArrayList<>();
     Enemy enemy = new Enemy(this);
+
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
+
 
 
     // Constructor

@@ -14,8 +14,12 @@ public class TileManager {
 
 
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    
+    // Set of tiles used
+    public Tile[] tile;
+
+    // 2D array respresenting the actual map of tiles to be drawn
+    public int mapTileNum[][];
 
 
     public TileManager(GamePanel gp) {
@@ -40,6 +44,7 @@ public class TileManager {
             tile[2].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/grass3.png"));
             tile[3] = new Tile();
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("/res/tiles/bushes.png"));
+            tile[3].collision = true;
 
         } catch (IOException e) {
             e.printStackTrace();
