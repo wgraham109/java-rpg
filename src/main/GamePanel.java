@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import entity.Enemy;
 import entity.Player;
+import object.SuperObject;
 import projectile.PlayerBullet;
 import tile.TileManager;
 
@@ -43,27 +44,23 @@ public class GamePanel extends JPanel implements Runnable{
     Enemy enemy = new Enemy(this);
 
     public CollisionChecker collisionChecker = new CollisionChecker(this);
-
+    public SuperObject obj[] = new SuperObject[10];
+    public AssetSetter aSetter = new AssetSetter(this);
 
 
     // Constructor
     public GamePanel() {
-
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-        enemies.add(enemy);
-
     }
 
     // Start the game thread
     public void startGameThread() {
-
         gameThread = new Thread(this);
         gameThread.start();
-
     }
 
     @Override
@@ -100,6 +97,11 @@ public class GamePanel extends JPanel implements Runnable{
         
     }
 
+    public void setupGame() {
+        enemies.add(enemy);
+        aSetter.setObject();
+    }
+
     // Update game information
     public void update() {
         player.update();
@@ -126,6 +128,12 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D)g;
 
         tileM.draw(g2);
+
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
 
         player.draw(g2);
 

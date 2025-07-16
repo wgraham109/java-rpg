@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 //https://icons8.com/icon/4VVzU1o5qv3P/genie
 // SciGho grass https://ninjikin.itch.io/grass
 // https://0-laxerglaxer.itch.io/game
-
+// https://greatdocbrown.itch.io/coins-gems-etc/download/eyJpZCI6NzA3MTg4LCJleHBpcmVzIjoxNzUyNjg2MzIxfQ%3d%3d.LbfqSygOX%2f%2bWrtY%2fWH03AbcNOTo%3d
 
 public class Game {
 
@@ -26,6 +26,7 @@ public class Game {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
+        gamePanel.setupGame();
         gamePanel.startGameThread();
 
     }
