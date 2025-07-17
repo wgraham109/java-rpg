@@ -21,6 +21,7 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -32,6 +33,8 @@ public class Player extends Entity {
         getPlayerImage();
 
         solidArea = new Rectangle(8, 16, 32, 32);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     public void setDefaultValues() {
@@ -109,6 +112,10 @@ public class Player extends Entity {
                     }
                 }
 
+                //Check object collision
+                int objIndex = gp.collisionChecker.checkObject(this, true);
+
+                interactWithObject(objIndex);
                 // Diagonal movement in progress;
 
                 // double xDistance = worldX-oldX;
@@ -160,6 +167,21 @@ public class Player extends Entity {
                 }
 
             }
+    }
+
+    public void interactWithObject(int i) {
+        if (i != 999) {
+            String objectName = gp.obj[i].name;
+            switch (objectName) {
+                case "Key":
+                    hasKey++;
+                    gp.obj[i] = null;
+                    System.out.println(hasKey + "keys");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {

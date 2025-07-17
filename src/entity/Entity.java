@@ -18,6 +18,8 @@ public class Entity {
     // The collision area of the entity
     public Rectangle solidArea;
 
+    public int solidAreaDefaultX, solidAreaDefaultY;
+
     // Whether or not the entity is colliding with a tile
     public boolean collisionOn = false;
     
