@@ -16,19 +16,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable {
     
+    //Tile settings
     final int originalTileSize = 16; //16x16 tile
     final int scale = 3;
-
     public final int tileSize = originalTileSize * scale; //size of one tile
+    
+    //Screen settings
     public final int maxScreenCol = 16; // columns in game view
     public final int maxScreenRow = 12; //rows in game view
-
     public final int screenWidth = tileSize * maxScreenCol; // 768 pixels total
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels total
 
-    // World map settings
+    //World map settings
     public final int maxWorldCol = 32;
     public final int maxWorldRow = 32;
     public final int worldWidth = tileSize * maxWorldCol;
@@ -36,17 +37,17 @@ public class GamePanel extends JPanel implements Runnable{
 
     int FPS = 60;
 
-    TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    public Player player = new Player(this, keyH);
-    ArrayList<Enemy> enemies = new ArrayList<>();
-    Enemy enemy = new Enemy(this);
-
+    KeyHandler keyH = new KeyHandler();
     public CollisionChecker collisionChecker = new CollisionChecker(this);
-    public SuperObject obj[] = new SuperObject[10];
     public AssetSetter aSetter = new AssetSetter(this);
 
+    public Player player = new Player(this, keyH);
+    
+    TileManager tileM = new TileManager(this);
+    ArrayList<Enemy> enemies = new ArrayList<>();
+    Enemy enemy = new Enemy(this);
+    public SuperObject obj[] = new SuperObject[10];
 
     // Constructor
     public GamePanel() {
@@ -63,38 +64,40 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();
     }
 
+    // Delta game loop
     @Override
     public void run() {
 
-        double drawInterval = 1000000000/FPS;
-        double nextDrawTime = System.nanoTime() + drawInterval;
+        double drawInterval = 1_000_000_000/FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0;
+        int drawCount = 0;
 
         while (gameThread != null) {
             
-            // Update game information
-            update();
+            currentTime = System.nanoTime();
 
-            // Draw to the screen with the updated information
-            repaint();
+            timer += currentTime - lastTime;
+            delta += (currentTime - lastTime) / drawInterval;
+            lastTime = currentTime;
 
-            // Sleep for remaining time until next frame
-            try {
-                double remainingTime = nextDrawTime - System.nanoTime();
-                remainingTime = remainingTime/1000000;
-
-                if (remainingTime < 0) remainingTime = 0;
-
-                Thread.sleep((long)remainingTime);
-
-                nextDrawTime += drawInterval;
-
-            } 
-            catch (InterruptedException e) {
-                e.printStackTrace();
+            if (delta >= 1) {
+                // Update game information
+                update();
+                // Draw to the screen with the updated information
+                repaint();
+                delta--;
+                drawCount++;
             }
 
+            if (timer >= 1_000_000_000) {
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
+            }
         }
-        
     }
 
     public void setupGame() {
@@ -124,8 +127,9 @@ public class GamePanel extends JPanel implements Runnable{
     // Draw with updated information
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D)g;
+
+        long drawStart = System.nanoTime();
 
         tileM.draw(g2);
 
@@ -145,6 +149,11 @@ public class GamePanel extends JPanel implements Runnable{
             bullet.draw(g2);
         }
         
+        long drawEnd = System.nanoTime();
+        long drawTime = drawEnd = drawStart;
+
+        System.out.println(drawTime/1_000_000_000);
+
         g2.dispose();
     }
 
