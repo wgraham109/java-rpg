@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.Utility;
 import projectile.PlayerBullet;
 
 public class Player extends Entity {
@@ -44,30 +45,41 @@ public class Player extends Entity {
         direction = "down";
     }
 
+    // Add sprite for player standing still
+
     public void getPlayerImage() {
+        down1 = setup("CharacterDown1");
+        down2 = setup("characterDown2");
+        down3 = setup("characterDown3");
+        down4 = setup("characterDown4");
+        up1 = setup("characterUp1");
+        up2 = setup("characterUp2");
+        up3 = setup("characterUp3");
+        up4 = setup("characterUp4");
+        right1 = setup("characterRight1");
+        right2 = setup("characterRight2");
+        right3 = setup("characterRight3");
+        right4 = setup("characterRight4");
+        left1 = setup("characterLeft1");
+        left2 = setup("characterLeft2");
+        left3 = setup("characterLeft3");
+        left4 = setup("characterLeft4");
+    }
+
+    public BufferedImage setup(String imageName) {
+        Utility uTool = new Utility();
+        BufferedImage image = null;
+
         try {
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown2.png"));
-            down3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown3.png"));
-            down4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterDown4.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp2.png"));
-            up3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp3.png"));
-            up4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterUp4.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight3.png"));
-            right4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterRight4.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft3.png"));
-            left4 = ImageIO.read(getClass().getResourceAsStream("/res/characters/CharacterLeft4.png"));
-        } 
-       
-        catch (IOException e) {
+            
+            image = ImageIO.read(getClass().getResourceAsStream("/res/characters/" + imageName + ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+        return image;
+    }    
 
     public void update() {
 
@@ -116,40 +128,6 @@ public class Player extends Entity {
                 int objIndex = gp.collisionChecker.checkObject(this, true);
 
                 interactWithObject(objIndex);
-                // Diagonal movement in progress;
-
-                // double xDistance = worldX-oldX;
-                // boolean xNeg = false;
-                // if (xDistance < 0) {
-                //     xNeg = true;
-                //     xDistance = -xDistance;
-                // }
-                // double yDistance = worldX-oldY;
-                // boolean yNeg = false;
-                // if (yDistance < 0) {
-                //     yNeg = true;
-                //     yDistance = -yDistance;
-                // }
-
-                // if (Math.pow(xDistance, 2) + Math.pow(yDistance, 2) > Math.pow(speed, 2)) {
-                //     double xPortion = xDistance/xDistance + yDistance;
-                //     double yPortion = yDistance/xDistance + yDistance;
-                //     xDistance = Math.sqrt(xPortion * Math.pow(speed, 2));
-                //     yDistance = Math.sqrt(yPortion * Math.pow(speed, 2));
-                //     if (xNeg) {
-                //         worldX = oldX - (int)xDistance;
-                //     }
-                //     else {
-                //         worldX = oldX + (int)yDistance;
-                //     }
-                //     if (yNeg) {
-                //         worldY = oldY - (int)yDistance;
-                //     }
-                //     else {
-                //         worldY = oldY + (int)yDistance;
-                //     }
-                // }
-                
 
                 spriteCounter++;
                 if (spriteCounter > 5) {
@@ -247,7 +225,7 @@ public class Player extends Entity {
             break;
         }
 
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, null);
         
     }
 
