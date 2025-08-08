@@ -83,23 +83,32 @@ public class Player extends Entity {
 
     public void update() {
 
-        if (keyH.upPressed == true || keyH.downPressed == true || 
-            keyH.leftPressed == true || keyH.rightPressed == true || keyH.spacePressed == true) {
+        if (keyH.upPressed || keyH.downPressed || 
+            keyH.leftPressed || keyH.rightPressed || keyH.spacePressed) {
 
-                // int oldX = worldX;
-                // int oldY = worldY;
+                boolean up = false;
+                boolean down = false;
+                boolean left = false;
+                boolean right = false;
 
-                if (keyH.upPressed == true) {
+                double dx = 0;
+                double dy = 0;
+
+                if (keyH.upPressed) {
                     direction = "up";
+                    up = true;
                 }
-                else if (keyH.downPressed == true) {
+                if (keyH.downPressed) {
                     direction = "down";
+                    down = true;
                 }
-                else if (keyH.leftPressed == true) {
+                if (keyH.leftPressed) {
                     direction = "left";
+                    left = true;
                 }
-                else if (keyH.rightPressed == true) {
+                if (keyH.rightPressed) {
                     direction = "right";
+                    right = true;
                 }
 
                 // Check tile collision
@@ -107,20 +116,30 @@ public class Player extends Entity {
                 gp.collisionChecker.checkTile(this);
 
                 // If collision is false, player can move
-                if (collisionOn == false) {
-                    switch (direction) {
-                        case "up":
-                            worldY -= speed;
-                            break;
-                        case "down":
-                            worldY += speed;
-                            break;
-                        case "right":
-                            worldX += speed;
-                            break;
-                        case "left":
-                            worldX -= speed;
-                            break;
+                if (!collisionOn) {
+                    // switch (direction) {
+                    //     case "up":
+                    //         worldY -= speed;
+                    //         break;
+                    //     case "down":
+                    //         worldY += speed;
+                    //         break;
+                    //     case "right":
+                    //         worldX += speed;
+                    //         break;
+                    //     case "left":
+                    //         worldX -= speed;
+                    //         break;
+                    // }
+                    if (up) dy -= 1;
+                    if (down) dy += 1;
+                    if (left) dx -= 1;
+                    if (right) dx += 1;
+
+                    double length = Math.sqrt(dx * dx + dy * dy);
+                    if (length != 0) {
+                        worldX += (dx / length) * (double) speed;
+                        worldY += (dy / length) * (double) speed;
                     }
                 }
 
@@ -140,7 +159,7 @@ public class Player extends Entity {
                     spriteCounter = 0;
                 }
 
-                if (keyH.spacePressed == true) {
+                if (keyH.spacePressed) {
                     bullets.put(new PlayerBullet(this, gp), 0);
                 }
 

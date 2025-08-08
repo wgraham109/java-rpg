@@ -43,8 +43,8 @@ public class Enemy extends Entity {
     public void update() {
 
         //Position of player
-        int playerX = gp.player.worldX;
-        int playerY = gp.player.worldY;
+        double playerX = gp.player.worldX;
+        double playerY = gp.player.worldY;
 
         // Calculate the relative change in worldX and worldY position over the bullets lifetime
         double xDiff = Math.abs(playerX - this.worldX);
@@ -80,8 +80,8 @@ public class Enemy extends Entity {
             worldY += (int)Math.sqrt(yDistance);
         }
 
-        screenX = worldX - gp.player.worldX + gp.player.screenX;
-        screenY = worldY - gp.player.worldY + gp.player.screenY;
+        screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
+        screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
     }
 
     public void draw(Graphics2D g2) {

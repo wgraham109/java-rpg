@@ -103,8 +103,8 @@ public class TileManager {
             int worldY = worldRow * gp.tileSize;
 
             //Player is always at the center of the screen, tiles are drawn to the screen relative to the player world position
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
+            int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
 
             //Check if the tile would appear on screen before rendering
             if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&

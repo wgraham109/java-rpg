@@ -1,16 +1,11 @@
 package projectile;
 
 import java.awt.Graphics2D;
-// import java.awt.MouseInfo;
 import java.awt.Point;
-// import java.awt.PointerInfo;
-// import java.awt.event.MouseAdapter;
-// import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
 
 
 import entity.Player;
@@ -40,10 +35,10 @@ public class PlayerBullet {
     public PlayerBullet(Player player, GamePanel gp) {
         this.player = player;
         this.gp = gp;
-        worldX = player.worldX + gp.tileSize/4;
-        worldY = player.worldY + gp.tileSize/4;
-        screenX = player.worldX + gp.tileSize/4;
-        screenY = player.worldY + gp.tileSize/4;
+        worldX = (int) player.worldX + gp.tileSize/4;
+        worldY = (int) player.worldY + gp.tileSize/4;
+        screenX = (int) player.worldX + gp.tileSize/4;
+        screenY = (int) player.worldY + gp.tileSize/4;
         lifetime = 0;
         getBulletImage();
         getCurrentMousePosition();
@@ -111,8 +106,8 @@ public class PlayerBullet {
             worldY += (int)Math.sqrt(yDistance);
         }
 
-        screenX = worldX - player.worldX + gp.player.screenX;
-        screenY = worldY - player.worldY + gp.player.screenY;
+        screenX = (int) (worldX - player.worldX + gp.player.screenX);
+        screenY = (int) (worldY - player.worldY + gp.player.screenY);
 
         // Keep track of the projectile lifetime
         lifetime++;
