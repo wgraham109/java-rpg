@@ -38,9 +38,10 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
 
     Thread gameThread;
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
+    UI ui = new UI(this);
 
     public Player player = new Player(this, keyH);
     
@@ -48,6 +49,12 @@ public class GamePanel extends JPanel implements Runnable {
     ArrayList<Enemy> enemies = new ArrayList<>();
     Enemy enemy = new Enemy(this);
     public SuperObject obj[] = new SuperObject[10];
+
+    // GAMESTATE
+    public int gameState;
+    public final int titleState = 0;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     // Constructor
     public GamePanel() {
@@ -103,25 +110,33 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
         enemies.add(enemy);
         aSetter.setObject();
+        gameState = titleState;
     }
 
     // Update game information
     public void update() {
-        player.update();
 
-        for (Enemy e : enemies) {
-            e.update();
-        }
+        if (gameState == playState) {
+            player.update();
 
-        Iterator<PlayerBullet> iter = player.bullets.keySet().iterator();
+            for (Enemy e : enemies) {
+                e.update();
+            }
 
-        while (iter.hasNext()) {
-            PlayerBullet bullet = iter.next();
-            bullet.update();
-            if (bullet.lifetime > 60) {
-                iter.remove();
+            Iterator<PlayerBullet> iter = player.bullets.keySet().iterator();
+
+            while (iter.hasNext()) {
+                PlayerBullet bullet = iter.next();
+                bullet.update();
+                if (bullet.lifetime > 60) {
+                    iter.remove();
+                }
             }
         }
+        // if (gameState == pauseState) {
+
+        // }
+
     }
 
     // Draw with updated information
@@ -129,25 +144,42 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
+        //Debug
         long drawStart = 0;
         drawStart += System.nanoTime();
 
-        tileM.draw(g2);
+        //Title screen
+        if (gameState == titleState) {
+            ui.draw(g2);
+        }
 
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
+        else {
+
+            //Tile
+            tileM.draw(g2);
+
+            //Objects
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    obj[i].draw(g2, this);
+                }
             }
-        }
 
-        player.draw(g2);
+            //Player
+            player.draw(g2);
 
-        for (Enemy e : enemies) {
-            e.draw(g2);
-        }
+            //Enemies
+            for (Enemy e : enemies) {
+                e.draw(g2);
+            }
 
-        for (PlayerBullet bullet : player.bullets.keySet()) {
-            bullet.draw(g2);
+            //Bullets
+            for (PlayerBullet bullet : player.bullets.keySet()) {
+                bullet.draw(g2);
+            }
+
+            //UI
+            ui.draw(g2);
         }
         
         long drawEnd = System.nanoTime();
