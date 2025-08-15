@@ -11,6 +11,8 @@ public class UI {
 
     Font arial40, arial80b;
 
+    public int commandNum = 0;
+
     public UI(GamePanel gp) {
         this.gp = gp;
 
@@ -58,16 +60,27 @@ public class UI {
         //Menu
         text = "New Game";
         x = getCenteredTextX(text);
-        y += gp.tileSize*4;
+        y += gp.tileSize*2;
         g2.drawString(text, x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
         text = "Load Game";
         x = getCenteredTextX(text);
-        y += gp.tileSize*4;
+        y += gp.tileSize;
         g2.drawString(text, x, y);
+        if (commandNum == 1) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
         text = "Quit";
         x = getCenteredTextX(text);
-        y += gp.tileSize*4;
+        y += gp.tileSize;
         g2.drawString(text, x, y);
+        if (commandNum == 2) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
     }
 
     public void drawPauseScreen() {
