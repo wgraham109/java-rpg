@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import entity.Enemy;
 import entity.Player;
 import object.SuperObject;
-import projectile.PlayerBullet;
 import tile.TileManager;
 
 import java.awt.Color;
@@ -13,7 +12,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -123,15 +121,7 @@ public class GamePanel extends JPanel implements Runnable {
                 e.update();
             }
 
-            Iterator<PlayerBullet> iter = player.bullets.keySet().iterator();
-
-            while (iter.hasNext()) {
-                PlayerBullet bullet = iter.next();
-                bullet.update();
-                if (bullet.lifetime > 60) {
-                    iter.remove();
-                }
-            }
+            //Bullet updates done in player class for now
         }
         // if (gameState == pauseState) {
 
@@ -173,10 +163,7 @@ public class GamePanel extends JPanel implements Runnable {
                 e.draw(g2);
             }
 
-            //Bullets
-            for (PlayerBullet bullet : player.bullets.keySet()) {
-                bullet.draw(g2);
-            }
+            //Bullet rendering done in Player class for now
 
             //UI
             ui.draw(g2);

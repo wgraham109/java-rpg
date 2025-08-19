@@ -7,8 +7,25 @@ import javax.swing.JFrame;
 // https://0-laxerglaxer.itch.io/game
 // https://greatdocbrown.itch.io/coins-gems-etc/download/eyJpZCI6NzA3MTg4LCJleHBpcmVzIjoxNzUyNjg2MzIxfQ%3d%3d.LbfqSygOX%2f%2bWrtY%2fWH03AbcNOTo%3d
 
+
+/**
+ * Open Issues
+ * - Fix game crashing when player touches the edge of the map
+ * - Refactor UI, KeyHandler, Player, and GamePanel
+ *      for more logical organization of key handling for movement, bullet firing and UI inputs
+ * - Add bullet collisions
+ * - Change doubles to floats
+ * - Fix player collisions not being overriden by diagonal movement (diagonal diretion strings rather than just up, down, right, left)
+ * - Fix bullets going off the screen
+ * - Fix bullet targeting to be more exact (likely double/int conversion related)
+ */
 public class Game {
 
+    /**
+     * Application entry point
+     * 
+     * @param args
+     */
     public static void main(String args[]) {
 
         JFrame window = new JFrame();

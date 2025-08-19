@@ -16,32 +16,22 @@ public class PlayerBullet {
     Player player;
     GamePanel gp;
 
-    int speed = 8;
+    int speed;
+    public boolean active;
+    double worldX, worldY;
+    double velocityX, velocityY;
 
-    // Starting point of the bullet
-    int worldX;
-    int worldY;
-
-    int screenX;
-    int screenY;
-
-    // Mouse position at the time the bullet is created/fired
-    int mouseX;
-    int mouseY;
-
+    int screenX, screenY;
+    double mouseX, mouseY;
     public int lifetime;
+
     public BufferedImage image;
 
     public PlayerBullet(Player player, GamePanel gp) {
         this.player = player;
         this.gp = gp;
-        worldX = (int) player.worldX + gp.tileSize/4;
-        worldY = (int) player.worldY + gp.tileSize/4;
-        screenX = (int) player.worldX + gp.tileSize/4;
-        screenY = (int) player.worldY + gp.tileSize/4;
-        lifetime = 0;
+        speed = 8;
         getBulletImage();
-        getCurrentMousePosition();
     }
 
     // Get the mouse position to use for bullet direction
@@ -64,62 +54,93 @@ public class PlayerBullet {
 
     }
 
-    // Reformat this and potentially change to an angle based calculation
+    public void fire() {
+        active = true;
+        worldX = player.worldX + gp.tileSize/4;
+        worldY = player.worldY + gp.tileSize/4;
+        screenX = player.screenX + gp.tileSize/4;
+        screenY = player.screenX + gp.tileSize/4;
+        lifetime = 0;
+        getCurrentMousePosition();
 
-    // FIX AIMING
+        double dx = mouseX - (double) screenX;
+        double dy = mouseY - (double) screenY;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 0) {
+            velocityX = (dx / distance) * (double) speed;
+            velocityY = (dy / distance) * (double) speed;
+        }
+        
+    }
+
+    // Fix
+    public boolean isOutOfBounds() {
+        return worldX < -10 || worldX > gp.screenWidth + 10 || 
+               worldY < -10 || worldY > gp.screenHeight + 10;
+    }
+
     public void update() {
     
-        int currentX = player.screenX;
-        int currentY = player.screenY;
+        
+        
+        worldX += velocityX;
+        worldY += velocityY;
 
-        // Calculate the relative change in x and y position over the bullets lifetime
-        double xDiff = Math.abs(mouseX - currentX);
-        if (mouseX < currentX) {
-            xDiff = -xDiff;
-        }
-        double yDiff = Math.abs(mouseY - currentY);
-        if (mouseY < currentY) {
-            yDiff = -yDiff;
-        }
 
-        // Calculate the ratio of x movement vs y movement
-        double sum = Math.abs(yDiff) + Math.abs(xDiff);
-        double xPortion = xDiff/sum;
-        double yPortion = yDiff/sum;
+        
+        
+        // double currentX = player.screenX;
+        // double currentY = player.screenY;
 
-        // Calculate the x and y change needed to have the bullet travel the correct distance
-        double hypotenuse = Math.pow(speed,2);
-        double xDistance = hypotenuse * xPortion;
-        double yDistance = hypotenuse * yPortion;
+        // // Calculate the relative change in x and y position over the bullets lifetime
+        // double xDiff = Math.abs(mouseX - currentX);
+        // if (mouseX < currentX) {
+        //     xDiff = -xDiff;
+        // }
+        // double yDiff = Math.abs(mouseY - currentY);
+        // if (mouseY < currentY) {
+        //     yDiff = -yDiff;
+        // }
 
-        // Apply the bullet movement of 1 frame
-        if (xDistance < 0) {
-            worldX -= (int)Math.sqrt(Math.abs(xDistance));
-        }
-        else {
-            worldX += (int)Math.sqrt(xDistance);
-        }
-        if (yDistance < 0) {
-            worldY -= (int)Math.sqrt(Math.abs(yDistance));
-        }
-        else {
-            worldY += (int)Math.sqrt(yDistance);
-        }
+        // // Calculate the ratio of x movement vs y movement
+        // double sum = Math.abs(yDiff) + Math.abs(xDiff);
+        // double xPortion = xDiff/sum;
+        // double yPortion = yDiff/sum;
 
-        screenX = (int) (worldX - player.worldX + gp.player.screenX);
-        screenY = (int) (worldY - player.worldY + gp.player.screenY);
+        // // Calculate the x and y change needed to have the bullet travel the correct distance
+        // double hypotenuse = Math.pow(speed,2);
+        // double xDistance = hypotenuse * xPortion;
+        // double yDistance = hypotenuse * yPortion;
+
+        // // Apply the bullet movement of 1 frame
+        // if (xDistance < 0) {
+        //     worldX -= (int)Math.sqrt(Math.abs(xDistance));
+        // }
+        // else {
+        //     worldX += (int)Math.sqrt(xDistance);
+        // }
+        // if (yDistance < 0) {
+        //     worldY -= (int)Math.sqrt(Math.abs(yDistance));
+        // }
+        // else {
+        //     worldY += (int)Math.sqrt(yDistance);
+        // }
+
+        screenX = (int) (worldX - player.worldX + (double) player.screenX);
+        screenY = (int) (worldY - player.worldY + (double) player.screenY);
 
         // Keep track of the projectile lifetime
         lifetime++;
-        // if (lifetime > 60) {
-        //     player.bullets.remove(this);
-        // }
+        if (lifetime > 60) {
+            active = false;
+        }
     }
 
     public void draw(Graphics2D g2) {
-
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null); // replace with drawing the bullet image
-
+        if (active) {
+            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        }
     }
 
 

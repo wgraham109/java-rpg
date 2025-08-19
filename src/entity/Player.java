@@ -4,20 +4,20 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
 import main.Utility;
-import projectile.PlayerBullet;
+import projectile.PlayerBulletManager;
 
 public class Player extends Entity {
     
     GamePanel gp;
     KeyHandler keyH;
-    public HashMap<PlayerBullet, Integer> bullets;
+    public PlayerBulletManager bulletM;
+    public int maxBullets = 60;
 
     public final int screenX;
     public final int screenY;
@@ -27,7 +27,7 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
-        this.bullets = new HashMap<>();
+        this.bulletM = new PlayerBulletManager(gp, this);
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
         setDefaultValues();
@@ -86,84 +86,85 @@ public class Player extends Entity {
         if (keyH.upPressed || keyH.downPressed || 
             keyH.leftPressed || keyH.rightPressed || keyH.spacePressed) {
 
-                boolean up = false;
-                boolean down = false;
-                boolean left = false;
-                boolean right = false;
+            boolean up = false;
+            boolean down = false;
+            boolean left = false;
+            boolean right = false;
 
-                double dx = 0;
-                double dy = 0;
+            double dx = 0;
+            double dy = 0;
 
-                if (keyH.upPressed) {
-                    direction = "up";
-                    up = true;
-                }
-                if (keyH.downPressed) {
-                    direction = "down";
-                    down = true;
-                }
-                if (keyH.leftPressed) {
-                    direction = "left";
-                    left = true;
-                }
-                if (keyH.rightPressed) {
-                    direction = "right";
-                    right = true;
-                }
-
-                // Check tile collision
-                collisionOn = false;
-                gp.collisionChecker.checkTile(this);
-
-                // If collision is false, player can move
-                if (!collisionOn) {
-                    // switch (direction) {
-                    //     case "up":
-                    //         worldY -= speed;
-                    //         break;
-                    //     case "down":
-                    //         worldY += speed;
-                    //         break;
-                    //     case "right":
-                    //         worldX += speed;
-                    //         break;
-                    //     case "left":
-                    //         worldX -= speed;
-                    //         break;
-                    // }
-                    if (up) dy -= 1;
-                    if (down) dy += 1;
-                    if (left) dx -= 1;
-                    if (right) dx += 1;
-
-                    double length = Math.sqrt(dx * dx + dy * dy);
-                    if (length != 0) {
-                        worldX += (dx / length) * (double) speed;
-                        worldY += (dy / length) * (double) speed;
-                    }
-                }
-
-                //Check object collision
-                int objIndex = gp.collisionChecker.checkObject(this, true);
-
-                interactWithObject(objIndex);
-
-                spriteCounter++;
-                if (spriteCounter > 5) {
-                    if (spriteNum == 4) {
-                        spriteNum = 1;
-                    }
-                    else {
-                        spriteNum++;
-                    }
-                    spriteCounter = 0;
-                }
-
-                if (keyH.spacePressed) {
-                    bullets.put(new PlayerBullet(this, gp), 0);
-                }
-
+            if (keyH.upPressed) {
+                direction = "up";
+                up = true;
             }
+            if (keyH.downPressed) {
+                direction = "down";
+                down = true;
+            }
+            if (keyH.leftPressed) {
+                direction = "left";
+                left = true;
+            }
+            if (keyH.rightPressed) {
+                direction = "right";
+                right = true;
+            }
+
+            // Check tile collision
+            collisionOn = false;
+            gp.collisionChecker.checkTile(this);
+
+            // If collision is false, player can move
+            if (!collisionOn) {
+                // switch (direction) {
+                //     case "up":
+                //         worldY -= speed;
+                //         break;
+                //     case "down":
+                //         worldY += speed;
+                //         break;
+                //     case "right":
+                //         worldX += speed;
+                //         break;
+                //     case "left":
+                //         worldX -= speed;
+                //         break;
+                // }
+                if (up) dy -= 1;
+                if (down) dy += 1;
+                if (left) dx -= 1;
+                if (right) dx += 1;
+
+                double length = Math.sqrt(dx * dx + dy * dy);
+                if (length != 0) {
+                    worldX += (dx / length) * (double) speed;
+                    worldY += (dy / length) * (double) speed;
+                }
+            }
+
+            //Check object collision
+            int objIndex = gp.collisionChecker.checkObject(this, true);
+
+            interactWithObject(objIndex);
+
+            spriteCounter++;
+            if (spriteCounter > 5) {
+                if (spriteNum == 4) {
+                    spriteNum = 1;
+                }
+                else {
+                    spriteNum++;
+                }
+                spriteCounter = 0;
+            }
+
+            if (keyH.spacePressed) {
+                bulletM.spawnBullet();
+            }
+        }
+        
+        bulletM.update();
     }
 
     public void interactWithObject(int i) {
@@ -245,7 +246,7 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, null);
-        
+        bulletM.draw(g2);
     }
 
 }
