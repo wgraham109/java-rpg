@@ -39,9 +39,9 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize * 16;
-        worldY = gp.tileSize * 16;
-        speed = 4;
+        worldX = (float) gp.tileSize * 16;
+        worldY = (float) gp.tileSize * 16;
+        speed = 4.0f;
         direction = "down";
     }
 
@@ -91,8 +91,8 @@ public class Player extends Entity {
             boolean left = false;
             boolean right = false;
 
-            double dx = 0;
-            double dy = 0;
+            float dx = 0;
+            float dy = 0;
 
             if (keyH.upPressed) {
                 direction = "up";
@@ -131,15 +131,15 @@ public class Player extends Entity {
                 //         worldX -= speed;
                 //         break;
                 // }
-                if (up) dy -= 1;
-                if (down) dy += 1;
-                if (left) dx -= 1;
-                if (right) dx += 1;
+                if (up) dy -= 1.0f;
+                if (down) dy += 1.0f;
+                if (left) dx -= 1.0f;
+                if (right) dx += 1.0f;
 
-                double length = Math.sqrt(dx * dx + dy * dy);
+                float length = (float) Math.sqrt(dx * dx + dy * dy);
                 if (length != 0) {
-                    worldX += (dx / length) * (double) speed;
-                    worldY += (dy / length) * (double) speed;
+                    worldX += (dx / length) * speed;
+                    worldY += (dy / length) * speed;
                 }
             }
 

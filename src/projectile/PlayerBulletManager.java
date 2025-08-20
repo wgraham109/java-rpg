@@ -42,7 +42,7 @@ public class PlayerBulletManager {
             bullet.update();
             
             // Mark bullets for removal instead of removing immediately
-            if (!bullet.active) {
+            if (!bullet.active || bullet.isOutOfBounds()) {
                 bulletsToRemove.add(bullet);
             }
         }

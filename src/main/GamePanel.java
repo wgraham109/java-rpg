@@ -172,7 +172,7 @@ public class GamePanel extends JPanel implements Runnable {
         long drawEnd = System.nanoTime();
         long drawTime = drawEnd - drawStart;
 
-        System.out.println(drawTime);
+        //System.out.println(drawTime);
 
         g2.dispose();
     }

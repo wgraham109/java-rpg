@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
 import entity.Player;
 import main.GamePanel;
 
@@ -16,13 +15,13 @@ public class PlayerBullet {
     Player player;
     GamePanel gp;
 
-    int speed;
+    float speed;
     public boolean active;
-    double worldX, worldY;
-    double velocityX, velocityY;
+    float worldX, worldY;
+    float velocityX, velocityY;
 
-    int screenX, screenY;
-    double mouseX, mouseY;
+    float screenX, screenY;
+    float mouseX, mouseY;
     public int lifetime;
 
     public BufferedImage image;
@@ -30,7 +29,7 @@ public class PlayerBullet {
     public PlayerBullet(Player player, GamePanel gp) {
         this.player = player;
         this.gp = gp;
-        speed = 8;
+        speed = 8.0f;
         getBulletImage();
     }
 
@@ -38,8 +37,8 @@ public class PlayerBullet {
     public void getCurrentMousePosition() {
         Point p = gp.getMousePosition();   // null if pointer not over the panel
         if (p != null) {
-            mouseX = p.x;
-            mouseY = p.y;
+            mouseX = (float) p.x;
+            mouseY = (float) p.y;
         }
     }
 
@@ -56,79 +55,35 @@ public class PlayerBullet {
 
     public void fire() {
         active = true;
-        worldX = player.worldX + gp.tileSize/4;
-        worldY = player.worldY + gp.tileSize/4;
-        screenX = player.screenX + gp.tileSize/4;
-        screenY = player.screenX + gp.tileSize/4;
+        worldX = player.worldX;
+        worldY = player.worldY;
+        screenX = player.screenX;
+        screenY = player.screenY;
         lifetime = 0;
         getCurrentMousePosition();
 
-        double dx = mouseX - (double) screenX;
-        double dy = mouseY - (double) screenY;
-        double distance = Math.sqrt(dx * dx + dy * dy);
+        float dx = mouseX - screenX;
+        float dy = mouseY - screenY;
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
         
         if (distance > 0) {
-            velocityX = (dx / distance) * (double) speed;
-            velocityY = (dy / distance) * (double) speed;
+            velocityX = (dx / distance) * speed;
+            velocityY = (dy / distance) * speed;
         }
         
     }
 
-    // Fix
     public boolean isOutOfBounds() {
-        return worldX < -10 || worldX > gp.screenWidth + 10 || 
-               worldY < -10 || worldY > gp.screenHeight + 10;
+        return worldX < -10.0f || worldX > gp.worldWidth || 
+               worldY < -10.0f || worldY > gp.worldHeight;
     }
 
     public void update() {
     
-        
-        
         worldX += velocityX;
         worldY += velocityY;
-
-
-        
-        
-        // double currentX = player.screenX;
-        // double currentY = player.screenY;
-
-        // // Calculate the relative change in x and y position over the bullets lifetime
-        // double xDiff = Math.abs(mouseX - currentX);
-        // if (mouseX < currentX) {
-        //     xDiff = -xDiff;
-        // }
-        // double yDiff = Math.abs(mouseY - currentY);
-        // if (mouseY < currentY) {
-        //     yDiff = -yDiff;
-        // }
-
-        // // Calculate the ratio of x movement vs y movement
-        // double sum = Math.abs(yDiff) + Math.abs(xDiff);
-        // double xPortion = xDiff/sum;
-        // double yPortion = yDiff/sum;
-
-        // // Calculate the x and y change needed to have the bullet travel the correct distance
-        // double hypotenuse = Math.pow(speed,2);
-        // double xDistance = hypotenuse * xPortion;
-        // double yDistance = hypotenuse * yPortion;
-
-        // // Apply the bullet movement of 1 frame
-        // if (xDistance < 0) {
-        //     worldX -= (int)Math.sqrt(Math.abs(xDistance));
-        // }
-        // else {
-        //     worldX += (int)Math.sqrt(xDistance);
-        // }
-        // if (yDistance < 0) {
-        //     worldY -= (int)Math.sqrt(Math.abs(yDistance));
-        // }
-        // else {
-        //     worldY += (int)Math.sqrt(yDistance);
-        // }
-
-        screenX = (int) (worldX - player.worldX + (double) player.screenX);
-        screenY = (int) (worldY - player.worldY + (double) player.screenY);
+        screenX = (worldX - player.worldX + player.screenX);
+        screenY = (worldY - player.worldY + player.screenY);
 
         // Keep track of the projectile lifetime
         lifetime++;
@@ -139,7 +94,7 @@ public class PlayerBullet {
 
     public void draw(Graphics2D g2) {
         if (active) {
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
         }
     }
 

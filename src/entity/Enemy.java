@@ -11,8 +11,8 @@ public class Enemy extends Entity {
 
     GamePanel gp;
 
-    public int screenX;
-    public int screenY;
+    public float screenX;
+    public float screenY;
 
     public boolean collision = true;
 
@@ -25,9 +25,9 @@ public class Enemy extends Entity {
     }
 
     public void setDefaultValues() {
-        worldX = 300;
-        worldY = 300;
-        speed = 2;
+        worldX = 300.0f;
+        worldY = 300.0f;
+        speed = 2.0f;
     }
 
     public void getEnemyImage() {
@@ -80,14 +80,14 @@ public class Enemy extends Entity {
             worldY += (int)Math.sqrt(yDistance);
         }
 
-        screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
-        screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
+        screenX = (worldX - gp.player.worldX + gp.player.screenX);
+        screenY = (worldY - gp.player.worldY + gp.player.screenY);
     }
 
     public void draw(Graphics2D g2) {
 
         
-        g2.drawImage(down1, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(down1, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
     }
 
 }

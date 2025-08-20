@@ -16,8 +16,7 @@ import javax.swing.JFrame;
  * - Add bullet collisions
  * - Change doubles to floats
  * - Fix player collisions not being overriden by diagonal movement (diagonal diretion strings rather than just up, down, right, left)
- * - Fix bullets going off the screen
- * - Fix bullet targeting to be more exact (likely double/int conversion related)
+ * - reformat to guard clauses in some methods
  */
 public class Game {
 
