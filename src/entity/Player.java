@@ -43,6 +43,11 @@ public class Player extends Entity {
         worldY = (float) gp.tileSize * 16;
         speed = 4.0f;
         direction = "down";
+
+        // Player Status
+        maxLife = 100;
+        life = 100;
+
     }
 
     // Add sprite for player standing still
@@ -81,6 +86,21 @@ public class Player extends Entity {
         return image;
     }    
 
+    public void interactWithObject(int i) {
+        if (i != 999) {
+            String objectName = gp.obj[i].name;
+            switch (objectName) {
+                case "Key":
+                    hasKey++;
+                    gp.obj[i] = null;
+                    System.out.println(hasKey + "keys");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public void update() {
 
         if (keyH.upPressed || keyH.downPressed || 
@@ -115,6 +135,10 @@ public class Player extends Entity {
             collisionOn = false;
             gp.collisionChecker.checkTile(this);
 
+            // Check event
+            gp.eHandler.checkEvent();
+
+            System.out.println(life);
             // If collision is false, player can move
             if (!collisionOn) {
                 // switch (direction) {
@@ -165,21 +189,6 @@ public class Player extends Entity {
         }
         
         bulletM.update();
-    }
-
-    public void interactWithObject(int i) {
-        if (i != 999) {
-            String objectName = gp.obj[i].name;
-            switch (objectName) {
-                case "Key":
-                    hasKey++;
-                    gp.obj[i] = null;
-                    System.out.println(hasKey + "keys");
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     public void draw(Graphics2D g2) {

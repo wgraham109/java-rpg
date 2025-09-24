@@ -22,5 +22,8 @@ public class Entity {
 
     // Whether or not the entity is colliding with a tile
     public boolean collisionOn = false;
+
+    public int maxLife;
+    public int life;
     
 }

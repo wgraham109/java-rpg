@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels total
 
     //World map settings
-    public final int maxWorldCol = 32;
+    public final int maxWorldCol = 40;
     public final int maxWorldRow = 32;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     UI ui = new UI(this);
+    public EventHandler eHandler = new EventHandler(this);
 
     public Player player = new Player(this, keyH);
     

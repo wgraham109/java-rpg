@@ -93,9 +93,10 @@ public class PlayerBullet {
     }
 
     public void draw(Graphics2D g2) {
-        if (active) {
-            g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
+        if (!active) {
+            return;
         }
+        g2.drawImage(image, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
     }
 
 

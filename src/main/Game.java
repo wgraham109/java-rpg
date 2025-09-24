@@ -16,7 +16,10 @@ import javax.swing.JFrame;
  * - Add bullet collisions
  * - Change doubles to floats
  * - Fix player collisions not being overriden by diagonal movement (diagonal diretion strings rather than just up, down, right, left)
- * - reformat to guard clauses in some methods
+ * - Refactor enemy movement
+ * - add more game events
+ * - add more robust map system
+ * - add more levels
  */
 public class Game {
 

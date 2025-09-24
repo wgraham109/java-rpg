@@ -93,6 +93,10 @@ public class UI {
 
     }
 
+    public void drawPlayerHealthBar() {
+        
+    }
+
     public int getCenteredTextX(String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gp.screenWidth/2 - length/2;
