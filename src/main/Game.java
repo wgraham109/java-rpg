@@ -10,16 +10,16 @@ import javax.swing.JFrame;
 
 /**
  * Open Issues
- * - Fix game crashing when player touches the edge of the map
  * - Refactor UI, KeyHandler, Player, and GamePanel
  *      for more logical organization of key handling for movement, bullet firing and UI inputs
  * - Add bullet collisions
- * - Change doubles to floats
+ * - add javadoc
  * - Fix player collisions not being overriden by diagonal movement (diagonal diretion strings rather than just up, down, right, left)
  * - Refactor enemy movement
  * - add more game events
  * - add more robust map system
  * - add more levels
+ * - refactor entity to contain super render and draw functions
  */
 public class Game {
 

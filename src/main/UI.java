@@ -31,7 +31,7 @@ public class UI {
             drawTitleScreen();
         }
         else if (gp.gameState == gp.playState) {
-
+            drawPlayerHealthBar();
         }
         else if (gp.gameState == gp.pauseState) {
             drawPauseScreen();
@@ -94,7 +94,15 @@ public class UI {
     }
 
     public void drawPlayerHealthBar() {
-        
+
+        double scale = (double)gp.tileSize * 2 / gp.player.maxLife;
+        double hpBarValue = scale * gp.player.life;
+
+        g2.setColor(new Color(35, 35, 35));
+        g2.fillRect(654, 15, (gp.tileSize * 2) + 1, gp.tileSize/2 + 2);
+
+        g2.setColor(new Color(255, 0, 30));
+        g2.fillRect(655, 16, (int)hpBarValue, gp.tileSize/2);
     }
 
     public int getCenteredTextX(String text) {

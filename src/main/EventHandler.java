@@ -23,7 +23,7 @@ public class EventHandler {
 
     //test for now
     public void checkEvent() {
-        if (hit(1, 1, "left")) {
+        if (hit(11, 11, "left")) {
             damagePit();
         }
     }
