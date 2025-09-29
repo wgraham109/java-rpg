@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import entity.Player;
 import main.GamePanel;
 
-public class PlayerBulletManager {
+public class BulletManager {
 
     GamePanel gp;
     Player player;
-    ArrayList<PlayerBullet> activeBullets;
-    ArrayDeque<PlayerBullet> inactiveBullets;
-    ArrayList<PlayerBullet> bulletsToRemove;
+    ArrayList<Bullet> activeBullets;
+    ArrayDeque<Bullet> inactiveBullets;
+    ArrayList<Bullet> bulletsToRemove;
 
-    public PlayerBulletManager(GamePanel gp, Player player) {
+    public BulletManager(GamePanel gp, Player player) {
         this.gp = gp;
         this.player = player;
         this.activeBullets = new ArrayList<>();
@@ -23,12 +23,12 @@ public class PlayerBulletManager {
         this.bulletsToRemove = new ArrayList<>();
         // change hard coded bullet count
         for (int i = 0; i < 65; i++) {
-            inactiveBullets.add(new PlayerBullet(player, gp));
+            inactiveBullets.add(new Bullet(player, gp));
         }
     }
 
     public boolean spawnBullet() {
-        PlayerBullet bullet = inactiveBullets.poll();
+        Bullet bullet = inactiveBullets.poll();
         if (bullet == null) {
             return false;
         }
@@ -38,7 +38,7 @@ public class PlayerBulletManager {
     }
 
     public void update() {
-        for (PlayerBullet bullet : activeBullets) {
+        for (Bullet bullet : activeBullets) {
             bullet.update();
             
             // Mark bullets for removal instead of removing immediately
@@ -46,7 +46,7 @@ public class PlayerBulletManager {
                 bulletsToRemove.add(bullet);
             }
         }
-        for (PlayerBullet bullet : bulletsToRemove) {
+        for (Bullet bullet : bulletsToRemove) {
             inactiveBullets.offer(bullet);
             activeBullets.remove(bullet);
         }
@@ -54,7 +54,7 @@ public class PlayerBulletManager {
     }
 
     public void draw(Graphics2D g2) {
-        for (PlayerBullet bullet : activeBullets) {
+        for (Bullet bullet : activeBullets) {
             bullet.draw(g2);
         }
     }

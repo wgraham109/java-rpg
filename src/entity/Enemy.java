@@ -1,45 +1,43 @@
 package entity;
 
-
-import java.awt.Graphics2D;
-
-import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
+/**
+ * Class of enemy entities
+ */
 public class Enemy extends Entity {
 
-    GamePanel gp;
 
     public float screenX;
     public float screenY;
 
     public boolean collision = true;
 
+    /**
+     * Constructor
+     * @param gp
+     */
     public Enemy(GamePanel gp) {
-        this.gp = gp;
+        super(gp);
         screenX = gp.screenWidth/4;
         screenY = gp.screenHeight/4;
-        getEnemyImage();
+        down1 = setup("enemies/bat");
         setDefaultValues();
     }
 
+    /**
+     * Default movement speed and starting position
+     */
     public void setDefaultValues() {
         worldX = 300.0f;
         worldY = 300.0f;
         speed = 2.0f;
+        direction = "down";
     }
 
-    public void getEnemyImage() {
-        try {
-            
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/enemies/bat.png"));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Update enemy position and values
+     */
     public void update() {
 
         //Position of player
@@ -80,14 +78,6 @@ public class Enemy extends Entity {
             worldY += (int)Math.sqrt(yDistance);
         }
 
-        screenX = (worldX - gp.player.worldX + gp.player.screenX);
-        screenY = (worldY - gp.player.worldY + gp.player.screenY);
-    }
-
-    public void draw(Graphics2D g2) {
-
-        
-        g2.drawImage(down1, (int) screenX, (int) screenY, gp.tileSize, gp.tileSize, null);
     }
 
 }

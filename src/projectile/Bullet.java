@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import entity.Player;
 import main.GamePanel;
 
-public class PlayerBullet {
+public class Bullet {
 
     Player player;
     GamePanel gp;
@@ -26,7 +26,7 @@ public class PlayerBullet {
 
     public BufferedImage image;
 
-    public PlayerBullet(Player player, GamePanel gp) {
+    public Bullet(Player player, GamePanel gp) {
         this.player = player;
         this.gp = gp;
         speed = 8.0f;

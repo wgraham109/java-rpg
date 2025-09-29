@@ -3,6 +3,7 @@ package main;
 import javax.swing.JPanel;
 
 import entity.Enemy;
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -45,8 +46,8 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     
     TileManager tileM = new TileManager(this);
-    ArrayList<Enemy> enemies = new ArrayList<>();
-    Enemy enemy = new Enemy(this);
+    ArrayList<Entity> enemies = new ArrayList<>();
+    Entity enemy = new Enemy(this);
     public SuperObject obj[] = new SuperObject[10];
 
     // GAMESTATE
@@ -55,7 +56,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
 
-    // Constructor
+    /**
+     * Constructor
+     */
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -64,13 +67,18 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
-    // Start the game thread
+    /**
+     * Start the thread
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    // Delta game loop
+    /**
+     * Main game loop
+     * - 60 FPS, delta time strategy used
+     */
     @Override
     public void run() {
 
@@ -106,19 +114,24 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Initial game settings
+     */
     public void setupGame() {
         enemies.add(enemy);
         aSetter.setObject();
         gameState = titleState;
     }
 
-    // Update game information
+    /**
+     * Update method to update game state every frame
+     */
     public void update() {
 
         if (gameState == playState) {
             player.update();
 
-            for (Enemy e : enemies) {
+            for (Entity e : enemies) {
                 e.update();
             }
 
@@ -130,7 +143,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    // Draw with updated information
+    /**
+     * Draw method to render updated game for each frame
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
@@ -160,7 +175,7 @@ public class GamePanel extends JPanel implements Runnable {
             player.draw(g2);
 
             //Enemies
-            for (Enemy e : enemies) {
+            for (Entity e : enemies) {
                 e.draw(g2);
             }
 

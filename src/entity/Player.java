@@ -2,21 +2,16 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.Utility;
-import projectile.PlayerBulletManager;
+import projectile.BulletManager;
+
 
 public class Player extends Entity {
     
-    GamePanel gp;
     KeyHandler keyH;
-    public PlayerBulletManager bulletM;
+    public BulletManager bulletM;
     public int maxBullets = 60;
 
     public final int screenX;
@@ -24,10 +19,15 @@ public class Player extends Entity {
 
     int hasKey = 0;
 
+    /**
+     * Constructor
+     * @param gp
+     * @param keyH
+     */
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
-        this.bulletM = new PlayerBulletManager(gp, this);
+        this.bulletM = new BulletManager(gp, this);
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
         setDefaultValues();
@@ -38,6 +38,9 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
     }
 
+    /**
+     * Default player values
+     */
     public void setDefaultValues() {
         worldX = (float) gp.tileSize * 16;
         worldY = (float) gp.tileSize * 16;
@@ -52,40 +55,33 @@ public class Player extends Entity {
 
     // Add sprite for player standing still
 
+    /**
+     * Categorize player images
+     */
     public void getPlayerImage() {
-        down1 = setup("CharacterDown1");
-        down2 = setup("characterDown2");
-        down3 = setup("characterDown3");
-        down4 = setup("characterDown4");
-        up1 = setup("characterUp1");
-        up2 = setup("characterUp2");
-        up3 = setup("characterUp3");
-        up4 = setup("characterUp4");
-        right1 = setup("characterRight1");
-        right2 = setup("characterRight2");
-        right3 = setup("characterRight3");
-        right4 = setup("characterRight4");
-        left1 = setup("characterLeft1");
-        left2 = setup("characterLeft2");
-        left3 = setup("characterLeft3");
-        left4 = setup("characterLeft4");
+        down1 = setup("characters/CharacterDown1");
+        down2 = setup("characters/characterDown2");
+        down3 = setup("characters/characterDown3");
+        down4 = setup("characters/characterDown4");
+        up1 = setup("characters/characterUp1");
+        up2 = setup("characters/characterUp2");
+        up3 = setup("characters/characterUp3");
+        up4 = setup("characters/characterUp4");
+        right1 = setup("characters/characterRight1");
+        right2 = setup("characters/characterRight2");
+        right3 = setup("characters/characterRight3");
+        right4 = setup("characters/characterRight4");
+        left1 = setup("characters/characterLeft1");
+        left2 = setup("characters/characterLeft2");
+        left3 = setup("characters/characterLeft3");
+        left4 = setup("characters/characterLeft4");
     }
 
-    public BufferedImage setup(String imageName) {
-        Utility uTool = new Utility();
-        BufferedImage image = null;
 
-        try {
-            
-            image = ImageIO.read(getClass().getResourceAsStream("/res/characters/" + imageName + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }    
-
+    /**
+     * Interaction with objects
+     * @param i
+     */
     public void interactWithObject(int i) {
         if (i != 999) {
             String objectName = gp.obj[i].name;
@@ -193,68 +189,7 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         
-        BufferedImage image = null;
-
-        switch (direction) {
-        case "down":
-            if (spriteNum == 1) {
-                image = down1;
-            }
-            if (spriteNum == 2) {
-                image = down2;
-            }
-            if (spriteNum == 3) {
-                image = down3; 
-            }
-            if (spriteNum == 4) {
-                image = down4;
-            }
-            break;
-        case "up":
-            if (spriteNum == 1) {
-                image = up1;
-            }
-            if (spriteNum == 2) {
-                image = up2;
-            }
-            if (spriteNum == 3) {
-                image = up3;
-            }
-            if (spriteNum == 4) {
-                image = up4;
-            }
-            break;
-        case "right":
-            if (spriteNum == 1) {
-                image = right1;
-            }
-            if (spriteNum == 2) {
-                image = right2;
-            }
-            if (spriteNum == 3) {
-                image = right3;
-            }
-            if (spriteNum == 4) {
-                image = right4;
-            }
-            break;
-        case "left":
-            if (spriteNum == 1) {
-                image = left1;
-            }
-            if (spriteNum == 2) {
-                image = left2;
-            }
-            if (spriteNum == 3) {
-                image = left3;
-            }
-            if (spriteNum == 4) {
-                image = left4;
-            }
-            break;
-        }
-
-        g2.drawImage(image, screenX, screenY, null);
+        super.draw(g2);
         bulletM.draw(g2);
     }
 
