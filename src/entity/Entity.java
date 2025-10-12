@@ -22,7 +22,7 @@ public class Entity {
     public float speed;
 
     public BufferedImage down1, down2, down3, down4, up1, up2, up3, up4, right1, right2, right3, right4, left1, left2, left3, left4;
-    public String direction;
+    public boolean up, down, right, left;
 
     // Used for keeping track of the current sprite (walking animations)
     public int spriteCounter = 0;
@@ -79,36 +79,7 @@ public class Entity {
 
             BufferedImage image = null;
 
-            switch (direction) {
-            case "down":
-                if (spriteNum == 1) {
-                    image = down1;
-                }
-                if (spriteNum == 2) {
-                    image = down2;
-                }
-                if (spriteNum == 3) {
-                    image = down3; 
-                }
-                if (spriteNum == 4) {
-                    image = down4;
-                }
-                break;
-            case "up":
-                if (spriteNum == 1) {
-                    image = up1;
-                }
-                if (spriteNum == 2) {
-                    image = up2;
-                }
-                if (spriteNum == 3) {
-                    image = up3;
-                }
-                if (spriteNum == 4) {
-                    image = up4;
-                }
-                break;
-            case "right":
+            if (right) {
                 if (spriteNum == 1) {
                     image = right1;
                 }
@@ -121,8 +92,8 @@ public class Entity {
                 if (spriteNum == 4) {
                     image = right4;
                 }
-                break;
-            case "left":
+            }
+            else if (left) {
                 if (spriteNum == 1) {
                     image = left1;
                 }
@@ -135,7 +106,34 @@ public class Entity {
                 if (spriteNum == 4) {
                     image = left4;
                 }
-                break;
+            }
+            if (down) {
+                if (spriteNum == 1) {
+                    image = down1;
+                }
+                if (spriteNum == 2) {
+                    image = down2;
+                }
+                if (spriteNum == 3) {
+                    image = down3; 
+                }
+                if (spriteNum == 4) {
+                    image = down4;
+                }
+            }
+            else if (up) {
+                if (spriteNum == 1) {
+                    image = up1;
+                }
+                if (spriteNum == 2) {
+                    image = up2;
+                }
+                if (spriteNum == 3) {
+                    image = up3;
+                }
+                if (spriteNum == 4) {
+                    image = up4;
+                }
             }
             
             g2.drawImage(image, screenX, screenY, null);

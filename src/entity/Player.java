@@ -45,7 +45,7 @@ public class Player extends Entity {
         worldX = (float) gp.tileSize * 16;
         worldY = (float) gp.tileSize * 16;
         speed = 4.0f;
-        direction = "down";
+        down = true;
 
         // Player Status
         maxLife = 100;
@@ -97,35 +97,21 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Game loop update for player
+     */
     public void update() {
 
         if (keyH.upPressed || keyH.downPressed || 
             keyH.leftPressed || keyH.rightPressed || keyH.spacePressed) {
 
-            boolean up = false;
-            boolean down = false;
-            boolean left = false;
-            boolean right = false;
-
             float dx = 0;
             float dy = 0;
 
-            if (keyH.upPressed) {
-                direction = "up";
-                up = true;
-            }
-            if (keyH.downPressed) {
-                direction = "down";
-                down = true;
-            }
-            if (keyH.leftPressed) {
-                direction = "left";
-                left = true;
-            }
-            if (keyH.rightPressed) {
-                direction = "right";
-                right = true;
-            }
+            up = keyH.upPressed;
+            down = keyH.downPressed;
+            left = keyH.leftPressed;
+            right = keyH.rightPressed;
 
             // Check tile collision
             collisionOn = false;
@@ -156,10 +142,11 @@ public class Player extends Entity {
                 if (left) dx -= 1.0f;
                 if (right) dx += 1.0f;
 
-                float length = (float) Math.sqrt(dx * dx + dy * dy);
-                if (length != 0) {
-                    worldX += (dx / length) * speed;
-                    worldY += (dy / length) * speed;
+                float distance = (float) Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance > 0) {
+                    worldX += (dx / distance) * speed;
+                    worldY += (dy / distance) * speed;
                 }
             }
 
@@ -184,12 +171,15 @@ public class Player extends Entity {
             }
         }
         
+        // Move to GamePanel when refactoring bullets
         bulletM.update();
     }
 
     public void draw(Graphics2D g2) {
         
         super.draw(g2);
+
+        //Move to GamePanel when refactoring bullets
         bulletM.draw(g2);
     }
 

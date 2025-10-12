@@ -32,7 +32,7 @@ public class Enemy extends Entity {
         worldX = 300.0f;
         worldY = 300.0f;
         speed = 2.0f;
-        direction = "down";
+        down = true;
     }
 
     /**
@@ -41,41 +41,19 @@ public class Enemy extends Entity {
     public void update() {
 
         //Position of player
-        double playerX = gp.player.worldX;
-        double playerY = gp.player.worldY;
+        float playerX = gp.player.worldX;
+        float playerY = gp.player.worldY;
 
         // Calculate the relative change in worldX and worldY position over the bullets lifetime
-        double xDiff = Math.abs(playerX - this.worldX);
-        if (playerX < this.worldX) {
-            xDiff = -xDiff;
-        }
-        double yDiff = Math.abs(playerY - this.worldY);
-        if (playerY < this.worldY) {
-            yDiff = -yDiff;
-        }
+        float dx = playerX - this.worldX;
+        float dy = playerY - this.worldY;
 
-        // Calculate the ratio of x movement vs worldY movement
-        double sum = Math.abs(yDiff) + Math.abs(xDiff);
-        double xPortion = xDiff/sum;
-        double yPortion = yDiff/sum;
+        // Calculate the distance the enemy travels
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        // Calculate the x and worldY change needed to have the bullet travel the correct distance
-        double hypotenuse = Math.pow(speed,2);
-        double xDistance = hypotenuse * xPortion;
-        double yDistance = hypotenuse * yPortion;
-
-        // Apply the bullet movement of 1 frame
-        if (xDistance < 0) {
-            worldX -= (int)Math.sqrt(Math.abs(xDistance));
-        }
-        else {
-            worldX += (int)Math.sqrt(xDistance);
-        }
-        if (yDistance < 0) {
-            worldY -= (int)Math.sqrt(Math.abs(yDistance));
-        }
-        else {
-            worldY += (int)Math.sqrt(yDistance);
+        if (distance > 0) {
+            worldX += (dx / distance) * speed;
+            worldY += (dy / distance) * speed;
         }
 
     }

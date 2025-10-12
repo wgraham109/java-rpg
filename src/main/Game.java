@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 /**
  * Open Issues
- * - Refactor UI, KeyHandler, Player, and GamePanel
+ * - Refactor BulletManager, UI, KeyHandler, Player, and GamePanel
  *      for more logical organization of key handling 
  *      for movement, bullet firing and UI inputs
  * - Add bullet collisions

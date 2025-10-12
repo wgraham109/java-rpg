@@ -37,10 +37,13 @@ public class EventHandler {
         eventRect.y += eventRow * gp.tileSize;
 
         if (gp.player.solidArea.intersects(eventRect)) {
-            if (gp.player.direction.contentEquals(reqDirection) || 
-                reqDirection.contentEquals("left")) {
-                    hit = true;
-                }
+            
+            hit = true;
+            
+            // if (gp.player.direction.contentEquals(reqDirection) || 
+            //     reqDirection.contentEquals("left")) {
+            //         
+            //     }
         }
 
         gp.player.solidArea.x = gp.player.solidAreaDefaultX;
