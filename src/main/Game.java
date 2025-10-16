@@ -9,15 +9,13 @@ import javax.swing.JFrame;
 
 
 /**
- * Open Issues
+ * Next Steps
  * - Refactor BulletManager, UI, KeyHandler, Player, and GamePanel
  *      for more logical organization of key handling 
  *      for movement, bullet firing and UI inputs
  * - Add bullet collisions
- * - Fix player collisions not being overriden by diagonal 
- *      movement (diagonal direction strings rather than 
- *      just up, down, right, left)
- * - Refactor enemy movement + add more enemies
+ * - refactor object checker
+ * - add more enemies
  * - add more game events
  * - add more robust map system
  * - add more levels

@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import java.awt.Rectangle;
 
 public class CollisionChecker {
 
@@ -10,53 +11,75 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public void checkTile(Entity entity) {
+    /**
+     * Calculates the current world bounds of an entity
+     */
+    private Rectangle calculateEntityBounds(Entity entity) {
+        return new Rectangle(
+            (int)entity.worldX + entity.solidArea.x,
+            (int)entity.worldY + entity.solidArea.y,
+            entity.solidArea.width,
+            entity.solidArea.height
+        );
+    }
+
+    /**
+     * Calculates where the entity bounds will be after moving
+     */
+    private Rectangle calculateProjectedBounds(Entity entity, Rectangle currentBounds) {
+        Rectangle projected = new Rectangle(currentBounds);
+        int speed = (int)entity.speed;
         
-        int entityLeftWorldX = (int) entity.worldX + entity.solidArea.x;
-        int entityRightWorldX = (int) entity.worldX + entity.solidArea.x + entity.solidArea.width;
-        int entityTopWorldY = (int) entity.worldY + entity.solidArea.y;
-        int entityBottomWorldY = (int) entity.worldY + entity.solidArea.y + entity.solidArea.height;
+        if (entity.up) projected.y -= speed;
+        if (entity.down) projected.y += speed;
+        if (entity.left) projected.x -= speed;
+        if (entity.right) projected.x += speed;
+        
+        return projected;
+    }
 
-        int entityLeftCol = entityLeftWorldX/gp.tileSize;
-        int entityRightCol = entityRightWorldX/gp.tileSize;
-        int entityTopRow = entityTopWorldY/gp.tileSize;
-        int entityBottomRow = entityBottomWorldY/gp.tileSize;
-
-        // two possible collision tiles set based on the direction of movement
-        int tileNum1, tilenum2;
-
+    private CollisionTiles findCollisionTiles(Entity entity, Rectangle bounds) {
         if (entity.up) {
-            entityTopRow = (entityTopWorldY - (int) entity.speed)/gp.tileSize;
-            tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-            tilenum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-            if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tilenum2].collision == true) {
-                entity.collisionOn = true;
-            }
+            return new CollisionTiles(bounds.x/gp.tileSize, bounds.y/gp.tileSize, 
+                                        (bounds.x+bounds.width-1)/gp.tileSize, bounds.y/gp.tileSize);
         }
         if (entity.down) {
-            entityBottomRow = (entityBottomWorldY + (int) entity.speed)/gp.tileSize;
-            tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-            tilenum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-            if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tilenum2].collision == true) {
-                entity.collisionOn = true;
-            }
+            return new CollisionTiles(bounds.x/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize, 
+                                        (bounds.x+bounds.width-1)/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize);
         }
         if (entity.right) {
-            entityRightCol = (entityRightWorldX + (int) entity.speed)/gp.tileSize;
-            tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-            tilenum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-            if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tilenum2].collision == true) {
-                entity.collisionOn = true;
-            }
+            return new CollisionTiles((bounds.x+bounds.width-1)/gp.tileSize, bounds.y/gp.tileSize, 
+                                        (bounds.x+bounds.width-1)/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize);
         }
         if (entity.left) {
-            entityLeftCol = (entityLeftWorldX - (int) entity.speed)/gp.tileSize;
-            tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-            tilenum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-            if (gp.tileM.tile[tileNum1].collision == true || gp.tileM.tile[tilenum2].collision == true) {
-                entity.collisionOn = true;
-            }
+            return new CollisionTiles(bounds.x/gp.tileSize, bounds.y/gp.tileSize, 
+                                        bounds.x/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize);
         }
+        else throw new IllegalArgumentException("Invalid direction");
+    }
+
+    /**
+     * Checks if a tile at given coordinates is solid
+     */
+    private boolean isTileSolid(int row, int col) {
+        int tileNum = gp.tileM.mapTileNum[col][row];
+        return gp.tileM.tile[tileNum].collision;
+    }
+
+    public void checkTileCollision(Entity entity) {
+
+        Rectangle entityBounds = calculateEntityBounds(entity);
+        Rectangle projectedBounds = calculateProjectedBounds(entity, entityBounds);
+        
+        CollisionTiles tiles = findCollisionTiles(entity, projectedBounds);
+
+        System.out.println(isTileSolid(tiles.row1, tiles.col1));
+        System.out.println(isTileSolid(tiles.row2, tiles.col2));
+
+        if (isTileSolid(tiles.row1, tiles.col1) || isTileSolid(tiles.row2, tiles.col2)) {
+            entity.collisionOn = true;
+        }
+        
 
     }
 
@@ -129,6 +152,16 @@ public class CollisionChecker {
             }
         }
         return index;
+    }
+
+    private static class CollisionTiles {
+        final int col1, row1, col2, row2;
+        public CollisionTiles(int col1, int row1, int col2, int row2) {
+            this.col1 = col1;
+            this.row1 = row1;
+            this.col2 = col2;
+            this.row2 = row2;
+        }
     }
 
 }

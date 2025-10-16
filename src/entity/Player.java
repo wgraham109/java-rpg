@@ -115,41 +115,26 @@ public class Player extends Entity {
 
             // Check tile collision
             collisionOn = false;
-            gp.collisionChecker.checkTile(this);
+            gp.collisionChecker.checkTileCollision(this);
 
             // Check event
             gp.eHandler.checkEvent();
 
-            System.out.println(life);
-            // If collision is false, player can move
-            if (!collisionOn) {
-                // switch (direction) {
-                //     case "up":
-                //         worldY -= speed;
-                //         break;
-                //     case "down":
-                //         worldY += speed;
-                //         break;
-                //     case "right":
-                //         worldX += speed;
-                //         break;
-                //     case "left":
-                //         worldX -= speed;
-                //         break;
-                // }
-                if (up) dy -= 1.0f;
-                if (down) dy += 1.0f;
-                if (left) dx -= 1.0f;
-                if (right) dx += 1.0f;
+            if (up) dy -= 1.0f;
+            if (down) dy += 1.0f;
+            if (left) dx -= 1.0f;
+            if (right) dx += 1.0f;
 
-                float distance = (float) Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance > 0) {
+            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 0) {
+
+                if (!collisionOn) {
                     worldX += (dx / distance) * speed;
                     worldY += (dy / distance) * speed;
                 }
             }
-
+            
             //Check object collision
             int objIndex = gp.collisionChecker.checkObject(this, true);
 
