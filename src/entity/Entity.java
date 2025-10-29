@@ -80,66 +80,8 @@ public class Entity {
             worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
             worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
-            BufferedImage image = null;
+            BufferedImage image = down1;
 
-            if (right) {
-                if (spriteNum == 1) {
-                    image = right1;
-                }
-                if (spriteNum == 2) {
-                    image = right2;
-                }
-                if (spriteNum == 3) {
-                    image = right3;
-                }
-                if (spriteNum == 4) {
-                    image = right4;
-                }
-            }
-            else if (left) {
-                if (spriteNum == 1) {
-                    image = left1;
-                }
-                if (spriteNum == 2) {
-                    image = left2;
-                }
-                if (spriteNum == 3) {
-                    image = left3;
-                }
-                if (spriteNum == 4) {
-                    image = left4;
-                }
-            }
-            if (down) {
-                if (spriteNum == 1) {
-                    image = down1;
-                }
-                if (spriteNum == 2) {
-                    image = down2;
-                }
-                if (spriteNum == 3) {
-                    image = down3; 
-                }
-                if (spriteNum == 4) {
-                    image = down4;
-                }
-            }
-            else if (up) {
-                if (spriteNum == 1) {
-                    image = up1;
-                }
-                if (spriteNum == 2) {
-                    image = up2;
-                }
-                if (spriteNum == 3) {
-                    image = up3;
-                }
-                if (spriteNum == 4) {
-                    image = up4;
-                }
-            }
-            else image = down1;
-            
             g2.drawImage(image, screenX, screenY, null);
 
         }

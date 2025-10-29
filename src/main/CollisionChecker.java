@@ -1,6 +1,9 @@
 package main;
 
+import java.awt.Rectangle;
+
 import entity.Entity;
+import projectile.Bullet;
 
 public class CollisionChecker {
 
@@ -71,6 +74,30 @@ public class CollisionChecker {
             return false;
         }
         return wouldCollideWithTile(entity, 0, dy);
+    }
+
+    public boolean checkBulletCollision(Entity entity, Bullet bullet, float dx, float dy) {
+        int left = (int)Math.floor(bullet.worldX + bullet.solidArea.x + dx);
+        int right = (int)Math.floor(bullet.worldX + bullet.solidArea.x + dx + bullet.solidArea.width - 1);
+        int top = (int)Math.floor(bullet.worldY + bullet.solidArea.y + dy);
+        int bottom = (int)Math.floor(bullet.worldY + bullet.solidArea.y + dy + bullet.solidArea.height - 1);
+
+        if (getEntityBounds(entity).contains(left, top) ||
+            getEntityBounds(entity).contains(right, top) ||
+            getEntityBounds(entity).contains(left, bottom) ||
+            getEntityBounds(entity).contains(right, bottom)) {
+                return true;
+            }
+        else return false;
+    }
+
+    public Rectangle getEntityBounds(Entity entity) {
+        return new Rectangle(
+            (int)(entity.worldX + entity.solidArea.x),
+            (int)(entity.worldY + entity.solidArea.y),
+            entity.solidArea.width,
+            entity.solidArea.height
+        );
     }
 
     /**

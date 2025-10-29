@@ -46,9 +46,9 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyH);
     
     TileManager tileM = new TileManager(this);
-    ArrayList<Entity> enemies = new ArrayList<>();
+    public ArrayList<Entity> enemies = new ArrayList<>();
     //ArrayList<Entity> objects = new ArrayList<>();
-    Entity enemy = new Enemy(this);
+    public Entity enemy = new Enemy(this);
     public Entity obj[] = new Entity[10];
 
     // GAMESTATE

@@ -2,6 +2,7 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.KeyHandler;
@@ -88,7 +89,7 @@ public class Player extends Entity {
                 case "Key":
                     hasKey++;
                     gp.obj[i] = null;
-                    System.out.println(hasKey + "keys");
+                    System.out.println(hasKey + " keys");
                     break;
                 default:
                     break;
@@ -102,7 +103,7 @@ public class Player extends Entity {
     public void update() {
 
         if (keyH.upPressed || keyH.downPressed || 
-            keyH.leftPressed || keyH.rightPressed || keyH.spacePressed) {
+            keyH.leftPressed || keyH.rightPressed) {
 
             float dx = 0;
             float dy = 0;
@@ -111,9 +112,6 @@ public class Player extends Entity {
             down = keyH.downPressed;
             left = keyH.leftPressed;
             right = keyH.rightPressed;
-
-            // Check event
-            gp.eHandler.checkEvent();
 
             if (up) dy -= 1.0f;
             if (down) dy += 1.0f;
@@ -136,8 +134,10 @@ public class Player extends Entity {
             
             //Check object collision
             int objIndex = gp.collisionChecker.checkObject(this, true);
-
             interactWithObject(objIndex);
+
+            // Check event
+            gp.eHandler.checkEvent();
 
             spriteCounter++;
             if (spriteCounter > 5) {
@@ -149,23 +149,81 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
+        }
 
-            if (keyH.spacePressed) {
-                if (bulletCounter == 5) {
-                    bulletM.spawnBullet();
-                    bulletCounter = 1;
-                }
-                else {
-                    bulletCounter++;
-                }
+        if (keyH.spacePressed) {
+            if (bulletCounter == 5) {
+                bulletM.spawnBullet();
+                bulletCounter = 1;
+            }
+            else {
+                bulletCounter++;
             }
         }
         
     }
 
     public void draw(Graphics2D g2) {
-        
-        super.draw(g2);
+        BufferedImage image = null;
+        if (right) {
+            if (spriteNum == 1) {
+                image = right1;
+            }
+            if (spriteNum == 2) {
+                image = right2;
+            }
+            if (spriteNum == 3) {
+                image = right3;
+            }
+            if (spriteNum == 4) {
+                image = right4;
+            }
+        }
+        else if (left) {
+            if (spriteNum == 1) {
+                image = left1;
+            }
+            if (spriteNum == 2) {
+                image = left2;
+            }
+            if (spriteNum == 3) {
+                image = left3;
+            }
+            if (spriteNum == 4) {
+                image = left4;
+            }
+        }
+        if (down) {
+            if (spriteNum == 1) {
+                image = down1;
+            }
+            if (spriteNum == 2) {
+                image = down2;
+            }
+            if (spriteNum == 3) {
+                image = down3; 
+            }
+            if (spriteNum == 4) {
+                image = down4;
+            }
+        }
+        else if (up) {
+            if (spriteNum == 1) {
+                image = up1;
+            }
+            if (spriteNum == 2) {
+                image = up2;
+            }
+            if (spriteNum == 3) {
+                image = up3;
+            }
+            if (spriteNum == 4) {
+                image = up4;
+            }
+        }
+
+        g2.drawImage(image, screenX, screenY, null);
+
 
     }
 

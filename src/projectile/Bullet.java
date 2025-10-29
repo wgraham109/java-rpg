@@ -3,7 +3,9 @@ package projectile;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 import java.io.IOException;
+
 
 import javax.imageio.ImageIO;
 
@@ -17,12 +19,15 @@ public class Bullet {
 
     float speed;
     public boolean active;
-    float worldX, worldY;
+    public float worldX, worldY;
     float velocityX, velocityY;
 
     float screenX, screenY;
     float mouseX, mouseY;
     public int lifetime;
+
+    public Rectangle solidArea;
+    public int solidAreaDefaultX, solidAreaDefaultY;
 
     public BufferedImage image;
 
@@ -31,6 +36,9 @@ public class Bullet {
         this.gp = gp;
         speed = 8.0f;
         getBulletImage();
+        solidArea = new Rectangle(8, 16, 32, 32);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     // Get the mouse position to use for bullet direction
@@ -85,6 +93,9 @@ public class Bullet {
         screenX = (worldX - player.worldX + player.screenX);
         screenY = (worldY - player.worldY + player.screenY);
 
+        if (gp.collisionChecker.checkBulletCollision(gp.enemy, this, velocityX, velocityY)) {
+            active = false;
+        }
         // Keep track of the projectile lifetime
         lifetime++;
         if (lifetime > 60) {

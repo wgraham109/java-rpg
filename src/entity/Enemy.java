@@ -26,7 +26,7 @@ public class Enemy extends Entity {
         down1 = setup("enemies/bat");
         setDefaultValues();
 
-        solidArea = new Rectangle(8, 8, 32, 32);
+        solidArea = new Rectangle(8, 16, 32, 24);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
     }
