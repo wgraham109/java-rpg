@@ -97,7 +97,7 @@ public class CollisionChecker {
                     entity.solidArea.y -= entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
                         System.out.println("up collision");
-                        if (gp.obj[i].collision == true) {
+                        if (gp.obj[i].vertCollisionOn == true) {
                             entity.vertCollisionOn = true;
                         }
                         if (player == true) {
@@ -109,7 +109,7 @@ public class CollisionChecker {
                 if (entity.down) {
                     entity.solidArea.y += entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                        if (gp.obj[i].collision == true) {
+                        if (gp.obj[i].vertCollisionOn == true) {
                             entity.vertCollisionOn = true;
                         }
                         if (player == true) {
@@ -121,7 +121,7 @@ public class CollisionChecker {
                 if (entity.left) {
                     entity.solidArea.x -= entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                        if (gp.obj[i].collision == true) {
+                        if (gp.obj[i].vertCollisionOn == true) {
                             entity.vertCollisionOn = true;
                         }
                         if (player == true) {
@@ -133,7 +133,7 @@ public class CollisionChecker {
                 if (entity.right) {
                     entity.solidArea.x += entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
-                        if (gp.obj[i].collision == true) {
+                        if (gp.obj[i].vertCollisionOn == true) {
                             entity.vertCollisionOn = true;
                         }
                         if (player == true) {

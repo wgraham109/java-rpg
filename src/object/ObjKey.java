@@ -1,26 +1,24 @@
 package object;
 
-import javax.imageio.ImageIO;
+import java.awt.Rectangle;
 
+import entity.Entity;
 import main.GamePanel;
 
-public class ObjKey extends SuperObject{
+public class ObjKey extends Entity {
 
     GamePanel gp;
 
     public ObjKey(GamePanel gp) {
-        
-        this.gp = gp;
-        name = "Key";
+        super(gp);
 
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/objects/key.png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        collision = true;
+        name = "Key";
+        down1 = setup("objects/key");
+        vertCollisionOn = true;
+        horizCollisionOn = true;
+        solidArea = new Rectangle(0, 0, 48, 48);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
 }

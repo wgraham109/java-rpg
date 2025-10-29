@@ -16,10 +16,12 @@ public class Entity {
 
     GamePanel gp;
     KeyHandler keyH;
-    BulletManager bulletM;
+    public BulletManager bulletM;
+    Utility uTool;
     
     public float worldX, worldY;
     public float speed;
+    public String name;
 
     public BufferedImage down1, down2, down3, down4, up1, up2, up3, up4, right1, right2, right3, right4, left1, left2, left3, left4;
     public boolean up, down, right, left;
@@ -42,6 +44,7 @@ public class Entity {
 
     public Entity(GamePanel gp) {
         this.gp = gp;
+        this.uTool = new Utility(); 
     }
 
     /**
@@ -50,7 +53,6 @@ public class Entity {
      * @return
      */
     public BufferedImage setup(String imagePath) {
-        Utility uTool = new Utility();
         BufferedImage image = null;
 
         try {
@@ -136,6 +138,7 @@ public class Entity {
                     image = up4;
                 }
             }
+            else image = down1;
             
             g2.drawImage(image, screenX, screenY, null);
 

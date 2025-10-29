@@ -5,11 +5,11 @@ import javax.swing.JPanel;
 import entity.Enemy;
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -47,8 +47,9 @@ public class GamePanel extends JPanel implements Runnable {
     
     TileManager tileM = new TileManager(this);
     ArrayList<Entity> enemies = new ArrayList<>();
+    //ArrayList<Entity> objects = new ArrayList<>();
     Entity enemy = new Enemy(this);
-    public SuperObject obj[] = new SuperObject[10];
+    public Entity obj[] = new Entity[10];
 
     // GAMESTATE
     public int gameState;
@@ -135,7 +136,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             player.update();
-            //Bullet updates done in player class for now
+
+            player.bulletM.update();
         }
         // if (gameState == pauseState) {
 
@@ -167,7 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
             //Objects
             for (int i = 0; i < obj.length; i++) {
                 if (obj[i] != null) {
-                    obj[i].draw(g2, this);
+                    obj[i].draw(g2);
                 }
             }
 
@@ -179,7 +181,7 @@ public class GamePanel extends JPanel implements Runnable {
                 e.draw(g2);
             }
 
-            //Bullet rendering done in Player class for now
+            player.bulletM.draw(g2);
 
             //UI
             ui.draw(g2);
@@ -188,7 +190,19 @@ public class GamePanel extends JPanel implements Runnable {
         long drawEnd = System.nanoTime();
         long drawTime = drawEnd - drawStart;
 
-        //System.out.println(drawTime);
+        if (keyH.debugKey == true) {
+            g2.setFont(new Font("Arial", Font.PLAIN, 20));
+            g2.setColor(Color.BLACK);
+            int x = 10;
+            int y = 400;
+            int lineHeight = 20;
+
+            g2.drawString("WorldX" + player.worldX, x, y); y += lineHeight;
+            g2.drawString("WorldY" + player.worldY, x, y); y += lineHeight;
+            g2.drawString("Col" + (int)(player.worldX + player.solidArea.x)/tileSize, x, y); y += lineHeight;
+            g2.drawString("Row" + (int)(player.worldY + player.solidArea.y)/tileSize, x, y); y += lineHeight;
+            g2.drawString("Draw Time:" + drawTime, x, y);
+        }
 
         g2.dispose();
     }

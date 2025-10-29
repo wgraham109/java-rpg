@@ -7,6 +7,7 @@ public class KeyHandler implements KeyListener {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean spacePressed;
+    public boolean debugKey;
 
     GamePanel gp;
 
@@ -71,6 +72,9 @@ public class KeyHandler implements KeyListener {
                     gp.gameState = gp.playState;
                 }
             }
+            if (code == KeyEvent.VK_O) {
+                debugKey = true;
+            }
         }
         else if (gp.gameState == gp.pauseState) {
             if (gp.gameState == gp.playState) {
@@ -102,6 +106,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_SPACE) {
             spacePressed = false;
+        }
+        if (code == KeyEvent.VK_O) {
+            debugKey = false;
         }
     }
 

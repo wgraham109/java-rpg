@@ -11,13 +11,12 @@ import projectile.BulletManager;
 public class Player extends Entity {
     
     KeyHandler keyH;
-    public BulletManager bulletM;
-    public int maxBullets = 60;
 
     public final int screenX;
     public final int screenY;
 
     int hasKey = 0;
+    int bulletCounter = 0;
 
     /**
      * Constructor
@@ -152,20 +151,22 @@ public class Player extends Entity {
             }
 
             if (keyH.spacePressed) {
-                bulletM.spawnBullet();
+                if (bulletCounter == 5) {
+                    bulletM.spawnBullet();
+                    bulletCounter = 1;
+                }
+                else {
+                    bulletCounter++;
+                }
             }
         }
         
-        // Move to GamePanel when refactoring bullets
-        bulletM.update();
     }
 
     public void draw(Graphics2D g2) {
         
         super.draw(g2);
 
-        //Move to GamePanel when refactoring bullets
-        bulletM.draw(g2);
     }
 
 }
