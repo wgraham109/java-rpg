@@ -1,5 +1,7 @@
 package entity;
 
+import java.awt.Rectangle;
+
 import main.GamePanel;
 
 /**
@@ -23,14 +25,18 @@ public class Enemy extends Entity {
         screenY = gp.screenHeight/4;
         down1 = setup("enemies/bat");
         setDefaultValues();
+
+        solidArea = new Rectangle(8, 8, 32, 32);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
     }
 
     /**
      * Default movement speed and starting position
      */
     public void setDefaultValues() {
-        worldX = 300.0f;
-        worldY = 300.0f;
+        worldX = 600.0f;
+        worldY = 600.0f;
         speed = 2.0f;
         down = true;
     }
@@ -40,21 +46,25 @@ public class Enemy extends Entity {
      */
     public void update() {
 
-        //Position of player
         float playerX = gp.player.worldX;
         float playerY = gp.player.worldY;
 
-        // Calculate the relative change in worldX and worldY position over the bullets lifetime
         float dx = playerX - this.worldX;
         float dy = playerY - this.worldY;
 
-        // Calculate the distance the enemy travels
         float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 0) {
-            worldX += (dx / distance) * speed;
-            worldY += (dy / distance) * speed;
-        }
+        float desiredMoveX = (dx / distance) * speed;
+        float desiredMoveY = (dy / distance) * speed;
+
+        boolean xBlocked = gp.collisionChecker.checkTileCollisionX(this, desiredMoveX);
+        boolean yBlocked = gp.collisionChecker.checkTileCollisionY(this, desiredMoveY);
+
+        float finalMoveX = xBlocked ? 0 : desiredMoveX;
+        float finalMoveY = yBlocked ? 0 : desiredMoveY;
+
+        worldX += finalMoveX;
+        worldY += finalMoveY;
 
     }
 

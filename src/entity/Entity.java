@@ -34,7 +34,8 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
 
     // Whether or not the entity is colliding with a tile
-    public boolean collisionOn = false;
+    public boolean vertCollisionOn = false;
+    public boolean horizCollisionOn = false;
 
     public int maxLife;
     public int life;

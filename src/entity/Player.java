@@ -113,10 +113,6 @@ public class Player extends Entity {
             left = keyH.leftPressed;
             right = keyH.rightPressed;
 
-            // Check tile collision
-            collisionOn = false;
-            gp.collisionChecker.checkTileCollision(this);
-
             // Check event
             gp.eHandler.checkEvent();
 
@@ -127,13 +123,17 @@ public class Player extends Entity {
 
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
             
-            if (distance > 0) {
+            float desiredMoveX = (dx / distance) * speed;
+            float desiredMoveY = (dy / distance) * speed;
 
-                if (!collisionOn) {
-                    worldX += (dx / distance) * speed;
-                    worldY += (dy / distance) * speed;
-                }
-            }
+            boolean xBlocked = gp.collisionChecker.checkTileCollisionX(this, desiredMoveX);
+            boolean yBlocked = gp.collisionChecker.checkTileCollisionY(this, desiredMoveY);
+
+            float finalMoveX = xBlocked ? 0 : desiredMoveX;  // Only move if NOT blocked
+            float finalMoveY = yBlocked ? 0 : desiredMoveY;
+
+            worldX += finalMoveX;
+            worldY += finalMoveY;
             
             //Check object collision
             int objIndex = gp.collisionChecker.checkObject(this, true);

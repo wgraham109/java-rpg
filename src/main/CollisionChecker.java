@@ -1,7 +1,6 @@
 package main;
 
 import entity.Entity;
-import java.awt.Rectangle;
 
 public class CollisionChecker {
 
@@ -12,77 +11,75 @@ public class CollisionChecker {
     }
 
     /**
-     * Calculates the current world bounds of an entity
-     */
-    private Rectangle calculateEntityBounds(Entity entity) {
-        return new Rectangle(
-            (int)entity.worldX + entity.solidArea.x,
-            (int)entity.worldY + entity.solidArea.y,
-            entity.solidArea.width,
-            entity.solidArea.height
-        );
-    }
-
-    /**
-     * Calculates where the entity bounds will be after moving
-     */
-    private Rectangle calculateProjectedBounds(Entity entity, Rectangle currentBounds) {
-        Rectangle projected = new Rectangle(currentBounds);
-        int speed = (int)entity.speed;
-        
-        if (entity.up) projected.y -= speed;
-        if (entity.down) projected.y += speed;
-        if (entity.left) projected.x -= speed;
-        if (entity.right) projected.x += speed;
-        
-        return projected;
-    }
-
-    private CollisionTiles findCollisionTiles(Entity entity, Rectangle bounds) {
-        if (entity.up) {
-            return new CollisionTiles(bounds.x/gp.tileSize, bounds.y/gp.tileSize, 
-                                        (bounds.x+bounds.width-1)/gp.tileSize, bounds.y/gp.tileSize);
-        }
-        if (entity.down) {
-            return new CollisionTiles(bounds.x/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize, 
-                                        (bounds.x+bounds.width-1)/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize);
-        }
-        if (entity.right) {
-            return new CollisionTiles((bounds.x+bounds.width-1)/gp.tileSize, bounds.y/gp.tileSize, 
-                                        (bounds.x+bounds.width-1)/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize);
-        }
-        if (entity.left) {
-            return new CollisionTiles(bounds.x/gp.tileSize, bounds.y/gp.tileSize, 
-                                        bounds.x/gp.tileSize, (bounds.y+bounds.height-1)/gp.tileSize);
-        }
-        else throw new IllegalArgumentException("Invalid direction");
-    }
-
-    /**
      * Checks if a tile at given coordinates is solid
      */
-    private boolean isTileSolid(int row, int col) {
+    private boolean isTileSolid(int worldX, int worldY) {
+        int col = worldX / gp.tileSize;
+        int row = worldY / gp.tileSize;
+        
+        if (col < 0 || row < 0 || 
+            col >= gp.tileM.mapTileNum.length || 
+            row >= gp.tileM.mapTileNum[0].length) {
+            return true;
+        }
+
         int tileNum = gp.tileM.mapTileNum[col][row];
         return gp.tileM.tile[tileNum].collision;
     }
 
-    public void checkTileCollision(Entity entity) {
-
-        Rectangle entityBounds = calculateEntityBounds(entity);
-        Rectangle projectedBounds = calculateProjectedBounds(entity, entityBounds);
+    /**
+     * Checks if the current move would result in a collision
+     * @param entity
+     * @param dx
+     * @param dy
+     * @return
+     */
+    private boolean wouldCollideWithTile(Entity entity, float dx, float dy) {
+        int left = (int)Math.floor(entity.worldX + entity.solidArea.x + dx);
+        int right = (int)Math.floor(entity.worldX + entity.solidArea.x + dx + entity.solidArea.width - 1);
+        int top = (int)Math.floor(entity.worldY + entity.solidArea.y + dy);
+        int bottom = (int)Math.floor(entity.worldY + entity.solidArea.y + dy + entity.solidArea.height - 1);
         
-        CollisionTiles tiles = findCollisionTiles(entity, projectedBounds);
-
-        System.out.println(isTileSolid(tiles.row1, tiles.col1));
-        System.out.println(isTileSolid(tiles.row2, tiles.col2));
-
-        if (isTileSolid(tiles.row1, tiles.col1) || isTileSolid(tiles.row2, tiles.col2)) {
-            entity.collisionOn = true;
-        }
-        
-
+        // Check all four corners of the entity for collision
+        return isTileSolid(left, top) ||
+               isTileSolid(right, top) ||
+               isTileSolid(left, bottom) ||
+               isTileSolid(right, bottom); 
     }
 
+    /**
+     * Checks if the entity would collide in the horizontal direction
+     * @param entity
+     * @param dx
+     * @return
+     */
+    public boolean checkTileCollisionX(Entity entity, float dx) {
+        if (dx == 0) {
+            return false;
+        }
+        return wouldCollideWithTile(entity, dx, 0);
+    }
+
+    /**
+     * Checks if the entity would collide in the vertical direction
+     * @param entity
+     * @param dy
+     * @return
+     */
+    public boolean checkTileCollisionY(Entity entity, float dy) {
+        if (dy == 0) {
+            return false;
+        }
+        return wouldCollideWithTile(entity, 0, dy);
+    }
+
+    /**
+     * Checks for collision with an object
+     * Work in progress
+     * @param entity
+     * @param player
+     * @return
+     */
     public int checkObject(Entity entity, boolean player) {
 
         int index = 999;
@@ -101,7 +98,7 @@ public class CollisionChecker {
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
                         System.out.println("up collision");
                         if (gp.obj[i].collision == true) {
-                            entity.collisionOn = true;
+                            entity.vertCollisionOn = true;
                         }
                         if (player == true) {
                             index = i;
@@ -113,7 +110,7 @@ public class CollisionChecker {
                     entity.solidArea.y += entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
                         if (gp.obj[i].collision == true) {
-                            entity.collisionOn = true;
+                            entity.vertCollisionOn = true;
                         }
                         if (player == true) {
                             index = i;
@@ -125,7 +122,7 @@ public class CollisionChecker {
                     entity.solidArea.x -= entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
                         if (gp.obj[i].collision == true) {
-                            entity.collisionOn = true;
+                            entity.vertCollisionOn = true;
                         }
                         if (player == true) {
                             index = i;
@@ -137,7 +134,7 @@ public class CollisionChecker {
                     entity.solidArea.x += entity.speed;
                     if (entity.solidArea.intersects(gp.obj[i].solidArea)) {
                         if (gp.obj[i].collision == true) {
-                            entity.collisionOn = true;
+                            entity.vertCollisionOn = true;
                         }
                         if (player == true) {
                             index = i;
@@ -153,15 +150,4 @@ public class CollisionChecker {
         }
         return index;
     }
-
-    private static class CollisionTiles {
-        final int col1, row1, col2, row2;
-        public CollisionTiles(int col1, int row1, int col2, int row2) {
-            this.col1 = col1;
-            this.row1 = row1;
-            this.col2 = col2;
-            this.row2 = row2;
-        }
-    }
-
 }

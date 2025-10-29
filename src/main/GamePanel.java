@@ -129,12 +129,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
 
         if (gameState == playState) {
-            player.update();
-
+            
             for (Entity e : enemies) {
                 e.update();
             }
 
+            player.update();
             //Bullet updates done in player class for now
         }
         // if (gameState == pauseState) {
