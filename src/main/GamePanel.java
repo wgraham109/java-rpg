@@ -131,10 +131,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (gameState == playState) {
             
-            for (Entity e : enemies) {
-                e.update();
+            if (!enemies.isEmpty()) {
+                for (Entity e : enemies) {
+                    e.update();
+                }
             }
-
+        
             player.update();
 
             player.bulletM.update();
@@ -177,8 +179,10 @@ public class GamePanel extends JPanel implements Runnable {
             player.draw(g2);
 
             //Enemies
-            for (Entity e : enemies) {
-                e.draw(g2);
+            if (!enemies.isEmpty()) {
+                for (Entity e : enemies) {
+                    e.draw(g2);
+                }
             }
 
             player.bulletM.draw(g2);

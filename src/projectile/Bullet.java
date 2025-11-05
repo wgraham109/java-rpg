@@ -94,6 +94,13 @@ public class Bullet {
         screenY = (worldY - player.worldY + player.screenY);
 
         if (gp.collisionChecker.checkBulletCollision(gp.enemy, this, velocityX, velocityY)) {
+            gp.enemy.life -= 2;
+            if (gp.enemy.life <= 0) {
+                // Learn about why this isEmpty check is necessary
+                if (!gp.enemies.isEmpty()) {
+                    gp.enemies.remove(gp.enemies.get(0));
+                } 
+            }
             active = false;
         }
         // Keep track of the projectile lifetime

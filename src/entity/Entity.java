@@ -21,6 +21,8 @@ public class Entity {
     
     public float worldX, worldY;
     public float speed;
+    float dx;
+    float dy;
     public String name;
 
     public BufferedImage down1, down2, down3, down4, up1, up2, up3, up4, right1, right2, right3, right4, left1, left2, left3, left4;
@@ -66,7 +68,22 @@ public class Entity {
         return image;
     }
 
-    public void update() {}
+    public void update() {
+
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+        float desiredMoveX = (dx / distance) * speed;
+        float desiredMoveY = (dy / distance) * speed;
+
+        boolean xBlocked = gp.collisionChecker.checkTileCollisionX(this, desiredMoveX);
+        boolean yBlocked = gp.collisionChecker.checkTileCollisionY(this, desiredMoveY);
+
+        float finalMoveX = xBlocked ? 0 : desiredMoveX;
+        float finalMoveY = yBlocked ? 0 : desiredMoveY;
+
+        worldX += finalMoveX;
+        worldY += finalMoveY;
+    }
 
     public void draw(Graphics2D g2) {
         

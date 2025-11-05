@@ -39,6 +39,8 @@ public class Enemy extends Entity {
         worldY = 600.0f;
         speed = 2.0f;
         down = true;
+        maxLife = 100;
+        life = 100;
     }
 
     /**
@@ -49,23 +51,10 @@ public class Enemy extends Entity {
         float playerX = gp.player.worldX;
         float playerY = gp.player.worldY;
 
-        float dx = playerX - this.worldX;
-        float dy = playerY - this.worldY;
+        dx = playerX - this.worldX;
+        dy = playerY - this.worldY;
 
-        float distance = (float) Math.sqrt(dx * dx + dy * dy);
-
-        float desiredMoveX = (dx / distance) * speed;
-        float desiredMoveY = (dy / distance) * speed;
-
-        boolean xBlocked = gp.collisionChecker.checkTileCollisionX(this, desiredMoveX);
-        boolean yBlocked = gp.collisionChecker.checkTileCollisionY(this, desiredMoveY);
-
-        float finalMoveX = xBlocked ? 0 : desiredMoveX;
-        float finalMoveY = yBlocked ? 0 : desiredMoveY;
-
-        worldX += finalMoveX;
-        worldY += finalMoveY;
-
+        super.update();
     }
 
 }
