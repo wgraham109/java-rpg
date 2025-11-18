@@ -1,4 +1,4 @@
-package entity;
+package main.java.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -7,10 +7,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import main.GamePanel;
-import main.KeyHandler;
-import main.Utility;
-import projectile.BulletManager;
+import main.java.main.GamePanel;
+import main.java.main.KeyHandler;
+import main.java.main.Utility;
+import main.java.projectile.BulletManager;
 
 public class Entity {
 
@@ -59,7 +59,7 @@ public class Entity {
 
         try {
             
-            image = ImageIO.read(getClass().getResourceAsStream("/res/" + imagePath + ".png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/main/res/" + imagePath + ".png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
 
         } catch (IOException e) {

@@ -1,4 +1,4 @@
-package main;
+package main.java.main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -65,24 +65,14 @@ public class KeyHandler implements KeyListener {
                 spacePressed = true;
             }
             if (code == KeyEvent.VK_P) {
-                if (gp.gameState == gp.playState) {
-                    gp.gameState = gp.pauseState;
-                }
-                else if (gp.gameState == gp.pauseState) {
-                    gp.gameState = gp.playState;
-                }
+                gp.gameState = gp.pauseState;
             }
             if (code == KeyEvent.VK_O) {
                 debugKey = true;
             }
         }
         else if (gp.gameState == gp.pauseState) {
-            if (gp.gameState == gp.playState) {
-                    gp.gameState = gp.pauseState;
-                }
-                else if (gp.gameState == gp.pauseState) {
-                    gp.gameState = gp.playState;
-                }
+            gp.gameState = gp.playState;
         }
         
     }

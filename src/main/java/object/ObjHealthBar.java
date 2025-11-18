@@ -1,4 +1,4 @@
-package object;
+package main.java.object;
 
 public class ObjHealthBar {
 

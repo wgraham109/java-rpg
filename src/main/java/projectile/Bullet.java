@@ -1,4 +1,4 @@
-package projectile;
+package main.java.projectile;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -9,8 +9,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import entity.Player;
-import main.GamePanel;
+import main.java.entity.Player;
+import main.java.main.GamePanel;
 
 public class Bullet {
 
@@ -53,7 +53,7 @@ public class Bullet {
     public void getBulletImage() {
 
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/res/bullets/Bullet.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/main/res/bullets/Bullet.png"));
         } 
         catch (IOException e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package main;
+package main.java.main;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

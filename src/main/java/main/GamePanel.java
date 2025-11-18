@@ -1,11 +1,11 @@
-package main;
+package main.java.main;
 
 import javax.swing.JPanel;
 
-import entity.Enemy;
-import entity.Entity;
-import entity.Player;
-import tile.TileManager;
+import main.java.entity.Enemy;
+import main.java.entity.Entity;
+import main.java.entity.Player;
+import main.java.tile.TileManager;
 
 import java.awt.Color;
 import java.awt.Dimension;

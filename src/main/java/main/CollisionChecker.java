@@ -1,9 +1,9 @@
-package main;
+package main.java.main;
 
 import java.awt.Rectangle;
 
-import entity.Entity;
-import projectile.Bullet;
+import main.java.entity.Entity;
+import main.java.projectile.Bullet;
 
 public class CollisionChecker {
 

@@ -1,12 +1,12 @@
-package entity;
+package main.java.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import main.GamePanel;
-import main.KeyHandler;
-import projectile.BulletManager;
+import main.java.main.GamePanel;
+import main.java.main.KeyHandler;
+import main.java.projectile.BulletManager;
 
 
 public class Player extends Entity {
@@ -127,9 +127,6 @@ public class Player extends Entity {
             int objIndex = gp.collisionChecker.checkObject(this, true);
             interactWithObject(objIndex);
 
-            // Check event
-            gp.eHandler.checkEvent();
-
             spriteCounter++;
             if (spriteCounter > 5) {
                 if (spriteNum == 4) {
@@ -141,6 +138,9 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+
+        // Check tile event
+        gp.eHandler.checkEvent();
 
         if (keyH.spacePressed) {
             if (bulletCounter == 5) {

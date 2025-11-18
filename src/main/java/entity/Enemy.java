@@ -1,8 +1,8 @@
-package entity;
+package main.java.entity;
 
 import java.awt.Rectangle;
 
-import main.GamePanel;
+import main.java.main.GamePanel;
 
 /**
  * Class of enemy entities

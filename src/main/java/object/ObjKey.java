@@ -1,9 +1,9 @@
-package object;
+package main.java.object;
 
 import java.awt.Rectangle;
 
-import entity.Entity;
-import main.GamePanel;
+import main.java.entity.Entity;
+import main.java.main.GamePanel;
 
 public class ObjKey extends Entity {
 

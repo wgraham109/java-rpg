@@ -1,11 +1,11 @@
-package projectile;
+package main.java.projectile;
 
 import java.awt.Graphics2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-import entity.Player;
-import main.GamePanel;
+import main.java.entity.Player;
+import main.java.main.GamePanel;
 
 public class BulletManager {
 
