@@ -9,8 +9,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import main.java.entity.Entity;
 import main.java.entity.Player;
-import main.java.main.GamePanel;
+import main.java.game.GamePanel;
 
 public class Bullet {
 
@@ -93,16 +94,20 @@ public class Bullet {
         screenX = (worldX - player.worldX + player.screenX);
         screenY = (worldY - player.worldY + player.screenY);
 
-        if (gp.collisionChecker.checkBulletCollision(gp.enemy, this, velocityX, velocityY)) {
-            gp.enemy.life -= 2;
-            if (gp.enemy.life <= 0) {
+        for (int i = gp.enemies.size() - 1; i >= 0; i--) {
+            Entity enemy = gp.enemies.get(i);
+            if (gp.collisionChecker.checkBulletCollision(enemy, this, velocityX, velocityY)) {
+            enemy.life -= 2;
+            if (enemy.life <= 0) {
                 // Learn about why this isEmpty check is necessary
                 if (!gp.enemies.isEmpty()) {
-                    gp.enemies.remove(gp.enemies.get(0));
+                    gp.enemies.remove(enemy);
                 } 
             }
             active = false;
         }
+        }
+        
         // Keep track of the projectile lifetime
         lifetime++;
         if (lifetime > 60) {

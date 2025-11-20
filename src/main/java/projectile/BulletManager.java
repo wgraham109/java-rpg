@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import main.java.entity.Player;
-import main.java.main.GamePanel;
+import main.java.game.GamePanel;
 
 public class BulletManager {
 

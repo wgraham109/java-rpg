@@ -2,7 +2,7 @@ package main.java.entity;
 
 import java.awt.Rectangle;
 
-import main.java.main.GamePanel;
+import main.java.game.GamePanel;
 
 /**
  * Class of enemy entities
@@ -19,10 +19,12 @@ public class Enemy extends Entity {
      * Constructor
      * @param gp
      */
-    public Enemy(GamePanel gp) {
+    public Enemy(GamePanel gp, int startingX, int startingY) {
         super(gp);
-        screenX = gp.screenWidth/4;
-        screenY = gp.screenHeight/4;
+        worldX = startingX * gp.tileSize;
+        worldY = startingY * gp.tileSize;
+        screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
+        screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
         down1 = setup("enemies/bat");
         setDefaultValues();
 
@@ -35,8 +37,7 @@ public class Enemy extends Entity {
      * Default movement speed and starting position
      */
     public void setDefaultValues() {
-        worldX = 600.0f;
-        worldY = 600.0f;
+        
         speed = 2.0f;
         down = true;
         maxLife = 100;

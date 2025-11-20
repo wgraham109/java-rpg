@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import main.java.main.GamePanel;
-import main.java.main.KeyHandler;
+import main.java.game.GamePanel;
+import main.java.game.KeyHandler;
 import main.java.projectile.BulletManager;
 
 
@@ -16,7 +16,7 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    int hasKey = 0;
+    int keys = 0;
     int bulletCounter = 0;
 
     /**
@@ -90,9 +90,9 @@ public class Player extends Entity {
             String objectName = gp.obj[i].name;
             switch (objectName) {
                 case "Key":
-                    hasKey++;
+                    keys++;
                     gp.obj[i] = null;
-                    System.out.println(hasKey + " keys");
+                    System.out.println(keys + " keys");
                     break;
                 default:
                     break;

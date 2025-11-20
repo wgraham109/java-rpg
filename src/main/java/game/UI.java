@@ -1,4 +1,4 @@
-package main.java.main;
+package main.java.game;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +32,7 @@ public class UI {
         }
         else if (gp.gameState == gp.playState) {
             drawPlayerHealthBar();
-            if (gp.enemy.life > 0) {
+            if (gp.enemies.get(0).life > 0) {
                 drawEnemyHealthBar();
             }
         }
@@ -109,8 +109,8 @@ public class UI {
     }
     public void drawEnemyHealthBar() {
 
-        double scale = (double)gp.tileSize * 2 / gp.enemy.maxLife;
-        double hpBarValue = scale * gp.enemy.life;
+        double scale = (double)gp.tileSize * 2 / gp.enemies.get(0).maxLife;
+        double hpBarValue = scale * gp.enemies.get(0).life;
 
         g2.setColor(new Color(35, 35, 35));
         g2.fillRect(100, 15, (gp.tileSize * 2) + 1, gp.tileSize/2 + 2);

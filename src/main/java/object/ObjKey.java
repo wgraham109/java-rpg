@@ -3,7 +3,7 @@ package main.java.object;
 import java.awt.Rectangle;
 
 import main.java.entity.Entity;
-import main.java.main.GamePanel;
+import main.java.game.GamePanel;
 
 public class ObjKey extends Entity {
 

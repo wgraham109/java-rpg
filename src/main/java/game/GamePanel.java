@@ -1,11 +1,12 @@
-package main.java.main;
+package main.java.game;
 
 import javax.swing.JPanel;
 
 import main.java.entity.Enemy;
 import main.java.entity.Entity;
 import main.java.entity.Player;
-import main.java.tile.TileManager;
+import main.java.tile.Map;
+import main.java.tile.MapLoader;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -45,10 +46,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Player player = new Player(this, keyH);
     
-    TileManager tileM = new TileManager(this);
+    MapLoader mapLoader = new MapLoader(this);
+    Map currentMap;
     public ArrayList<Entity> enemies = new ArrayList<>();
     //ArrayList<Entity> objects = new ArrayList<>();
-    public Entity enemy = new Enemy(this);
     public Entity obj[] = new Entity[10];
 
     // GAMESTATE
@@ -119,9 +120,27 @@ public class GamePanel extends JPanel implements Runnable {
      * Initial game settings
      */
     public void setupGame() {
-        enemies.add(enemy);
+        Entity enemy1 = new Enemy(this, 15, 3);
+        Entity enemy2 = new Enemy(this, 17,5);
+        Entity enemy3 = new Enemy(this, 10,9);
+        Entity enemy4 = new Enemy(this, 5,6);
+        Entity enemy5 = new Enemy(this, 14,13);
+        Entity enemy6 = new Enemy(this, 7,16);
+        Entity enemy7 = new Enemy(this, 18,7);
+        Entity enemy8 = new Enemy(this, 4,13);
+        Entity enemy9 = new Enemy(this, 16,10);
+        enemies.add(enemy1);
+        enemies.add(enemy2);
+        enemies.add(enemy3);
+        enemies.add(enemy4);
+        enemies.add(enemy5);
+        enemies.add(enemy6);
+        enemies.add(enemy7);
+        enemies.add(enemy8);
+        enemies.add(enemy9);
         aSetter.setObject();
         gameState = titleState;
+        currentMap = mapLoader.loadMap("Layout1");
     }
 
     /**
@@ -166,7 +185,7 @@ public class GamePanel extends JPanel implements Runnable {
         else {
 
             //Tile
-            tileM.draw(g2);
+            drawMap(g2, currentMap);
 
             //Objects
             for (int i = 0; i < obj.length; i++) {
@@ -209,6 +228,42 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
+    }
+
+    // Draw tiles on the screen
+    public void drawMap(Graphics2D g2, Map map) {
+
+        int worldCol = 0;
+        int worldRow = 0;
+
+        while (worldCol < this.maxWorldCol && worldRow < this.maxWorldRow) {
+
+            int tileNum = map.tiles[worldCol][worldRow];
+            int worldX = worldCol * this.tileSize;
+            int worldY = worldRow * this.tileSize;
+
+            //Player is always at the center of the screen, tiles are drawn to the screen relative to the player world position
+            int screenX = (int) (worldX - this.player.worldX + this.player.screenX);
+            int screenY = (int) (worldY - this.player.worldY + this.player.screenY);
+
+            //Check if the tile would appear on screen before rendering
+            if (worldX + this.tileSize > this.player.worldX - this.player.screenX &&
+                worldX - this.tileSize < this.player.worldX + this.player.screenX &&
+                worldY + this.tileSize > this.player.worldY - this.player.screenY &&
+                worldY - this.tileSize < this.player.worldY + this.player.screenY) {
+
+                g2.drawImage(this.aSetter.getTileImage(tileNum), screenX, screenY, null);
+
+            }
+            
+            worldCol++;
+
+            if (worldCol == this.maxWorldCol) {
+                worldCol = 0;
+                worldRow++;
+            }
+
+        }
     }
 
 }

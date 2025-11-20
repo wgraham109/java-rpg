@@ -1,4 +1,4 @@
-package main.java.main;
+package main.java.game;
 
 import java.awt.Rectangle;
 
@@ -21,13 +21,13 @@ public class CollisionChecker {
         int row = worldY / gp.tileSize;
         
         if (col < 0 || row < 0 || 
-            col >= gp.tileM.mapTileNum.length || 
-            row >= gp.tileM.mapTileNum[0].length) {
+            col >= gp.currentMap.tiles.length || 
+            row >= gp.currentMap.tiles[0].length) {
             return true;
         }
 
-        int tileNum = gp.tileM.mapTileNum[col][row];
-        return gp.tileM.tile[tileNum].collision;
+        int tileNum = gp.currentMap.tiles[col][row];
+        return gp.aSetter.getCollision(tileNum);
     }
 
     /**

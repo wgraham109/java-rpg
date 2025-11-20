@@ -1,4 +1,4 @@
-package main.java.main;
+package main.java.game;
 
 import javax.swing.JFrame;
 
@@ -13,12 +13,11 @@ import javax.swing.JFrame;
  * - Refactor BulletManager, UI, KeyHandler, Player, and GamePanel
  *      for more logical organization of key handling 
  *      for movement, bullet firing and UI inputs
- * - Add bullet collisions
  * - refactor object checker
- * - add more enemies
  * - add more game events
  * - add more robust map system
  * - add more levels
+ * - fix game crashing when all enemies die
  */
 public class Game {
 

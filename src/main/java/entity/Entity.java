@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import main.java.main.GamePanel;
-import main.java.main.KeyHandler;
-import main.java.main.Utility;
+import main.java.game.GamePanel;
+import main.java.game.KeyHandler;
+import main.java.game.Utility;
 import main.java.projectile.BulletManager;
 
 public class Entity {
@@ -43,6 +43,11 @@ public class Entity {
 
     public int maxLife;
     public int life;
+    public int level;
+    public int exp;
+    public int attack;
+    public int defense;
+
 
     public Entity(GamePanel gp) {
         this.gp = gp;
